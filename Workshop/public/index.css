@@ -1,0 +1,26 @@
+.x_axis {
+  stroke: black;
+  stroke-width: 1;
+}
+
+.y_axis {
+  stroke: black;
+  stroke-width: 1;
+}
+
+.line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    z-index: 7;
+}
+  
+.area {
+  fill: lightskyblue;
+  z-index: 1;
+}
+
+.areaDanger {
+    fill: crimson;
+    z-index: 2;
+}
