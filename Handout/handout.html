@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/d3-delaunay@5.3.0/dist/d3-delaunay.min.js" type="text/javascript"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>VI - Handout - Interactivity, Paths &amp; Selections</title>
+</head>
+<body>
+  <main class="container mt-5">
+    <div class="content">
+      
+      <h2 id="selections">Selections</h2>
+      
+      <p>
+        Selektionen sind Javascript Objekte die Referenzen auf Elemente behalten. 
+        Sie werden von D3 generiert und interpretiert.
+      </p>
+
+      <p>
+        Guckt man sich beispielsweise den Rückgabewert des folgenden Codes an, sieht man wie diese 
+        Selektions-Objekte aufgebaut sind:
+      </p>
+
+      <pre><code>
+        console.log(svgAreaChart.select("path"))
+      </code></pre>
+
+      <p>
+        Der Output dieses Logs sieht folgendermaßen aus:
+      </p>
+
+      <img src="img/selectionobject.png"><a href="Input Output.png" style="width:1019px; height:290px"></a>
+
+      <p>
+        In dem Objekt sind 3 Referenzen: <i>_groups</i>, <i>_parents</i> und <i>prototype</i>. Für den Nutzer 
+        ist im Grunde nur das <i>_groups</i>-Objekt relevant. Dieses beinhaltet die eigentlichen Referenzen, in diesem 
+        Fall das path-Objekt das mittels des Codes selektiert wurde. 
+      </p>
+      
+      <h5>Chaining</h5>
+      <p>Wie bereits in vielen Beispielen auch aus anderen Themen gezeigt, werden Selektionen häufig in Ketten (english. Chains) aufgerufen. 
+        Dementsprechend beziehen sich die Funktionen nur auf die vorhergegangene Selektionen. Somit können Elemente und ihre Subelemente entsprechend modifiziert werden.</p>
+      <pre><code>
+        d3.select("svg") //Select the first SVG on the page
+          .attr("width", 500) //Set its width
+          .attr("height", 300) //Set its height
+          .selectAll("circle") //Select all circles *within* that SVG
+          .attr("cx", 250) //Set each circle’s cx attribute
+          .attr("cy", 150) //Set each circle’s cy attribute
+      </code></pre>
+      
+      <p>
+        Anzumerken ist, dass viele Funktionen die Selektion intakt lassen. 
+        So ändert sich die Selektion durch die Funktion <i>.attr</i> beispielsweise nicht. 
+        Andere Funktionen hingegen verändern die Auswahl aktiv, ein gutes Beispiel hierfür ist die Funktion <i>.append</i>, 
+        die die aktive Auswahl durch die angehängten Elemente ersetzt.
+      </p>
+      <pre><code>
+        d3.select("body") // New selection
+          .append("svg") // New selection
+          .attr("width", 960) // Acts on svg
+          .attr("height", 500) // Acts on svg
+          .append("g") // New selection
+          .attr("transform", "translate(20,20)") // Acts on g
+      </code></pre>
+
+      <p>
+        Natürlich lassen sich Selektionen auch zwischenspeichern, somit ist folgender Code funktional identisch, es wird lediglich eine Referenz zu der Selektion gespeichert:
+      </p>
+
+      <pre><code>
+        var g = d3.select("body") // New selection
+                  .append("svg") // New selection
+                  .attr("width", 960) // Acts on svg
+                  .attr("height", 500) // Acts on svg
+                  .append("g") // New selection
+                  
+        g.attr("transform", "translate(20,20)") // Acts on g
+      </code></pre>
+    
+      <hr>
+
+      <h2 id="EnterMergeExit">Enter, Merge &amp; Exit</h2>
+
+      <p>
+        Enter, Merge und Exit sind drei essentielle Funktionen die es zu verstehen gilt, wenn über Selektionen gesprochen wird.
+        Alle drei dieser Funktionen geben Selektionen zurück, allerdings nicht wie andere Elemente. Sie sind dazu gedacht häufige Sonderf&auml;lle abzudecken.
+      </p>
+
+      <h5>Enter-Selektion</h5>
+      <p>Die Enter-Selektion wird h&auml;ufig genutzt um neue Elemente zu generieren. Sie wird von D3 generiert, wenn Daten an eine Selektion gebunden werden. 
+        Hier erstellt D3 für jeden Datenpunkt der kein representatives Element im DOM hat ein Platzhalter-Element. 
+        Diese Elemente werden dann in der Enter-Selektion zusammengefasst.
+      </p>
+
+      <pre><code>
+        //Create bars
+        svg.selectAll("rect")     // Returns empty selection since no rect exist yet 
+           .data(dataset, key)    // Binds data to the empty selection
+           .enter()               // Returns a selection of placeholder elements (one for each data point)
+           .append("rect")        // Creates a rect for each placeholder element in the enter selection
+      </code></pre>
+
+      <p>
+        Anschließend können diese Platzhalter-Elemente durch <i>.append</i> mit richtigen Elementen ersetzt werden.
+      </p>
+
+      <h5>Merge-Selektion</h5>
+      <p>
+        Wenn sich ein Datensatz dynamisch verändert, müssen einzelne Elemente generiert und 
+        in die Selektion der bestehenden Elemente eingefügt werden. Hierfür dient die Merge-Selektion.
+        Die länge der Enter-Selektion wird vergrößert wenn ein Element dem Datensatz hinzugefügt wird, 
+        auch wenn die Selektion nur die neuen Elemente beinhaltet. 
+      </p>
+
+      <p>
+        Die Merge-Selektion wird auf eine Selektion angewandt und erwartet eine weitere Selektion als Parameter. 
+        Anschließend gibt sie eine neue Selektion die alle Elemente beinhaltet zurück.
+      </p>
+      <pre><code>
+        //Add new elements
+        bars.enter()          // Enter-selection with new placeholder elements
+            .append("rect")   // Again a *new* selection containing ONLY the new elements
+            .merge(bars)      // Merges the elements with the old "bars"-selection
+      </code></pre>
+
+      <article class="message is-warning">
+        <div class="message-body">
+          In JavaScript ist die Länge eines Array nur eine Eigenschaft des Objekts die unabhängig von dem eigentlichen 
+          Array verändert und überschrieben werden kann. 
+          Dies nutzt D3 um sich zu merken wieviele Elemente existieren, auch wenn diese bereits mit Funktionen wie 
+          <i>.append</i> ersetzt wurden. Diese macht eine Merge-Funktion wichtig um die neuen Elemente mit den alten 
+          sinnvoll zusammenfügen zu können.
+        </div>
+      </article>
+
+      <h5>Exit-Selektion</h5>
+      <p>
+        In dem Fall, dass der Datensatz weniger Datenpunkte enthält als DOM-Elemente werden die jeweiligen 
+        überflüssigen Elemente der Exit-Selektion hinzugefügt. 
+        Dementsprechend ist die Exit-Selektion in den meisten Fällen leer und enthält nur Elemente wenn 
+        beispielsweise Werte gelöscht werden.
+      </p>
+      
+      <p>
+        In diesem Fall werden die entsprechenden Elemente einfach entfernt. 
+        Anzumerken ist, dass die Funktion dennoch eine Selektion der gelöschten Elemente zurückgibt, 
+        es also möglich ist die Elemente noch weiter zu verarbeiten, also beispielsweise zu Speichern o.&Auml;. .
+      </p>
+
+      <pre><code>
+        //Remove Elements
+        bars.exit()     // Returns selection of all exiting elements
+            .remove()   // Removes contained elements
+      </code></pre>
+
+    <hr>
+    
+    <h2 id="filtering">Filtering</h2>
+    <p>
+      Wann immer Daten visualisiert werden sollen ist es wichtig, in der Lage zu sein einen spezifischen Bereich der Daten auswählen zu können.
+      Im folgenden Beispiel wir das Farbattribut mittels einer Funktion ermittelt; nur Elemente die einen gebundenen Datentyp über 15 haben, werden Rot gefärbt.
+    </p>
+
+    
+    <pre><code>
+      var dataset = [ 5, 10, 15, 20, 25 ];
+      d3.select("body").selectAll("p")
+        .data(dataset)
+        .enter()
+        .append("p")
+        .text(function(d) {
+          return "I can count up to " + d;
+        })
+        .style("color", function(d) {
+          if (d > 15) { //Threshold of 15
+            return "red";
+          } else {
+            return "black";
+          }
+        });
+    </code></pre>
+
+    <p>
+      Dieses Beispiel funktioniert zwar, ist allerdings undynamisch, da die Selektion nicht verändert wird. 
+      Es ist also nicht möglich mehrere Attribute zu modifizieren oder die ausgewählten Elemente zu speichern.
+      Zu diesem Zweck bietet D3 eine .filter-Funktion. Diese filtert eine Selektion und gibt das Ergebnis als neue Selektion zurück.
+      Zusätzlich dazu ist nun die Logik des Codes sinnvoll ausgelagert, da bei gutem Stil die .style-Funktion nicht darüber entscheiden sollte was, sondern lediglich wie, gestyled wird.
+    </p>
+
+    <pre><code>
+      d3.select("body").selectAll("p")
+        .data(dataset)
+        .enter()
+        .append("p")
+        .text(function(d) {
+          return "I can count up to " + d;
+        })
+        .filter(function(d) { //Filter current selection of all paragraphs
+          return d > 15; //Returns true only if d > 15
+        }) //New selection of filtered elements is handed off here
+        .style("color", "red"); //Applies only to elements in the filtered selection
+    </code></pre>
+
+    <p>
+      Natürlich kann eine solche Selektion auch gespeichert werden:
+    </p>
+
+    <pre><code>
+      var allParas = d3.select("body").selectAll("p")
+      .data(dataset)
+      .enter()
+      .append("p")
+      .text(function(d) {
+        return "I can count up to " + d;
+      });
+
+      var redParas = allParas.filter(function(d) {
+                                return d > 15;
+                             })
+                             .style("color", "red");
+    </code></pre>
+    <hr>
+
+    <h2 id=each>Each-Funktion</h2>
+    <p>
+      Als letzte essentielle Funktion gibt es noch die .each-Funktion. Diese führt einen Befehl für jedes Element einer Selektion seperat aus.
+      Damit können Elemente unabhängig voneinander modifiziert werden.
+    </p>
+
+    <pre><code>
+      selection.each(function(d, i) {
+        //The 'this' context is now set to
+        //the element on which you’re acting.
+        //
+        //Do something with 'this', d, and/or i here.
+      });
+    </code></pre>
+
+    <p>
+      Die Werte für d und i (also den Datenwert und der Zähler) werden hierbei von D3 automatisch mit den entsprechenden Daten aufgefüllt.
+    </p>
+  </main>
+  
+  
+</body>
+</html>
+
+<footer class="footer mt-5">
+  <div class="content has-text-centered">
+    <p>
+      Die Seite wurde mit <strong>Bulma</strong> erstellt. Bulma ist <a href="">MIT</a> lizensiert. <br>Der Inhalt dieser Seite wurde von David Alexander Kring für das Modul <i>Visualisierung</i> an der TH Köln im Sommersemester 2021 erstellt und steht für diesem Rahmen als <a href="https://creativecommons.org/about/cclicenses/">CC BY NC SA</a> zur Verfügung.
+    </p>
+
+
+    
+
+  </div>
+</footer>
+
+</body>
+</html>
