@@ -61,6 +61,26 @@ d3.tsv('./ExampleData/exampleData.tsv').then(function(data){
     svg.append("g")
         .attr("class", "y_axis")
         .call(d3.axisLeft(yScale));
+
+    svg.selectAll("rect").on("mouseover", function (d) {
+        var xPosition = parseFloat(d3.select(this).attr("x")) + width / data.length / 2;
+        var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + height / 2;
+
+        d3.select("#tooltip")
+            .style("left", xPosition + "px")
+            .style("top", yPosition + "px")
+            .select("#value")
+            .text(`${d.dosen_differenz_zum_vortag.toLocaleString()}` + " am " + `${d.date}`);
+
+        d3.select(this).attr("fill", "orange");
+        d3.select("#tooltip").classed("hidden", false)
+    })
+
+    svg.selectAll("rect").on("mouseout", function (d) {
+        d3.select("#tooltip").classed("hidden", true);
+        d3.select(this)
+            .attr("fill", "rgb(0, 0, 150)");
+    })
 })
 
 
