@@ -14,6 +14,14 @@ app.get('/index.js', (req, res) => {
     res.sendFile(path.join(__dirname,'./index.js'));
 })
 
+app.get('/barchart', (req, res) => {
+    res.sendFile(path.join(__dirname,'./barchart.html'));
+})
+
+app.get('/barchart.js', (req, res) => {
+    res.sendFile(path.join(__dirname,'./barchart.js'));
+})
+
 app.get('/ExampleData/exampleData.tsv', (req, res) => {
     res.sendFile(path.join(__dirname,'/ExampleData/exampleData.tsv'));
 })
