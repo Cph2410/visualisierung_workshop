@@ -170,55 +170,77 @@
           <h2 id="paths">Paths</h2>
 
           <p>
-              Für die Erstellung von Interaktivit&auml;t bietet D3 die <i>on()</i> Methode an.
-              Hierfür muss lediglich der Event Listener und das Verhalten definiert werden.
+                Das SVG-Path Element wird verwendet um verschiedene komplexere Formen zu erstellen. <br>
+                Dafür werden mehrere Linien oder Kurven miteinander kombiniert.<br>
           </p>
 
-          <h5>Paths</h5>
-          <p>
-              aaa
-          </p>
-          <p>
-              aaa
-          </p>
-
-          <pre><code>
-            &ltsvg width="200" height="300"><b>
-                &ltpath d="M10 10 L 90 10 L 90 90 L 10 90 L 10 10" fill="transparent" stroke="black"/><b>
+          <h5>Beispiel Quadrat</h5>
+            <pre><code>
+            &ltsvg width="200" height="300"><br>
+                &ltpath d="M10 10 L 90 10 L 90 90 L 10 90 L 10 10" fill="transparent" stroke="black"/><br>
             &lt/svg>
-          </code></pre>
-            <svg width="200" height="300">
+            </code></pre>
+            <svg width="100" height="100">
                 <path d="M10 10 L 90 10 L 90 90 L 10 90 L 10 10" fill="transparent" stroke="black"/>
             </svg>
 
+            <p>
+                Bei zunehmender Komplexität, wird diese Syntax jedoch immer unleserlicher und ein manuelles Erstellen von Paths, <br>
+                welche zum Beispiel eine Line Chart darstellen, ist nahezu unm&ouml;glich. <br>
+                D3Js bietet zum erstellen von Paths verschiedene Funktionen. <br>
+                Für uns sind dabei vorallem die Funktionen d3.line() sowie d3.area() interessant. <br>
+                Die erm&ouml;lichen uns das erstellen von Line und Area Charts.
+            </p>
+
           <h5>Line Charts</h5>
+          
+          <p>
+            Die Funktion d3.line() erstellt uns eine Line generator function.<br>
+            Die so erzeugte Paths folgt einer Reihe von (Koordinaten-)Punkten und verbindet diese mit einer Linie.<br>
+            Den beiden .x und .y - Accessoren k&ouml;nen wir unsere Datenwerte "&uuml;bergeben". Im Beispiel werden diese mittels einer Scalefunktion noch skaliert.<br>
+          </p>
+
+          <pre><code>
+            var lineFunc = d3.line()
+                             .x(function(d, i) { return xScale(d.time); })
+                             .y(function(d) { return yScale(d.value); });
+        
+            var svg = d3.select("#graphdiv").append("svg")
+                        .attr("width", WIDTH)
+                        .attr("height", HEIGHT)
+                        .append("g");
+
+            svg.append("path")
+               .datum(DATA)
+               .attr("class", "line") 
+               .attr("d", lineFunc); 
+          </code></pre>
           <img src="img/linechart.png"><a href="" style="width:1019px; height:290px"></a>
-          <p>
-              aaa
-          </p>
-
-          <p>
-              aaa
-          </p>
-
-          <pre><code>
-               .test
-          </code></pre>
-
           <h5>Area Charts</h5>
-          <img src="img/areachart.png"><a href="" style="width:1019px; height:290px"></a>
           <p>
-              aaa
-          </p>
-
-          <p>
-              aaa
+            Die Funktion d3.area() erstellt uns analog zur "line" funktionen eine area generator function.<br>
+            Bei diesen kommt zus&auml;tzlich noch eine Basislinie hinzu. Die Fl&auml;che zwischen der Basislinie (y=0) und der Linie der Datenpunkte wird dann gefüllt.<br>
+            Bei D3js spiegelt sich das so wieder, dass es anstatt einen .y Accessor, einen .y1 und .y2 Accessor gibt. Ersterem ordnet man dabei der Basislinie zu, w&auml;hrend zweiterem wieder die Y-Werte der<br>
+            Darten zugeordnet werden.
           </p>
 
           <pre><code>
-               .test
-          </code></pre>
+            var areaFunc = d3.area()
+                             .x(function(d) { return xScale(d.time); })
+                             .y0(function() { return yScale.range()[0]; })
+                             .y1(function(d) { return yScale(d.value); });
 
+            var svg = d3.select("#test_graph2").append("svg")
+                        .attr("width", WIDTH)
+                        .attr("height", HEIGHT)
+                        .append("g");
+                             
+            svg.append("path")
+               .datum(TUT_DATA)
+               .attr("class", "area")
+               .attr("d", areaFunc);
+          </code></pre>
+          <img src="img/areachart.png"><a href="" style="width:1019px; height:290px"></a>
 
           <h2 id="selections">Selections</h2>
 
@@ -463,7 +485,7 @@
 <footer class="footer mt-5">
   <div class="content has-text-centered">
     <p>
-      Die Seite wurde mit <strong>Bulma</strong> erstellt. Bulma ist <a href="">MIT</a> lizensiert. <br>Der Inhalt dieser Seite wurde von David Alexander Kring für das Modul <i>Visualisierung</i> an der TH Köln im Sommersemester 2021 erstellt und steht für diesem Rahmen als <a href="https://creativecommons.org/about/cclicenses/">CC BY NC SA</a> zur Verfügung.
+      Die Seite wurde mit <strong>Bulma</strong> erstellt. Bulma ist <a href="">MIT</a> lizensiert. <br>Der Inhalt dieser Seite wurde von David Alexander Kring, Christoph Olberg und Merle Struckman für das Modul <i>Visualisierung</i> an der TH Köln im Sommersemester 2021 erstellt und steht für diesem Rahmen als <a href="https://creativecommons.org/about/cclicenses/">CC BY NC SA</a> zur Verfügung.
     </p>
 
 
