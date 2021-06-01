@@ -89,7 +89,6 @@ d3.tsv('./ExampleData/exampleData.tsv').then(function(data){
     d3.select("#slider")
         .on("change", function() {
             var threshold = +d3.select(this).node().value;
-            console.log(threshold)
             svg.selectAll("rect")
                 .attr("fill", function(d) {
                     return "rgb(0, 0, 150)";
