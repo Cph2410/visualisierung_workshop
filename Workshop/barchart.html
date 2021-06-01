@@ -11,9 +11,13 @@
 <body>
     <h1>Visualisierung Workshop</h1>
     <p>Anzahl der Impfdosen</p>
-    <div id="bar_chart">
+    <div style="float:left"><p>
+        <input id="slider" type="range" min="0" max="1410000" step="1000" value="0" orient="vertical">
+    </p></div>
+    <div style="float:center" id="bar_chart">
 
     </div>
+    <p><input id="button" type="button" value="Random Colors!"></p>
     <div id="tooltip" class="hidden">
         <p><strong>Anzahl der Impfdosen</strong></p>
         <p><span id="value"></span></p>

@@ -50,4 +50,13 @@
     font-size: 16px;
     line-height: 20px;
 }
-	
+
+#slider {
+    margin-top:20px;
+    height: 720px;
+    width: 10px;
+
+    /* Orient vertically */
+    -webkit-appearance: slider-vertical;
+    writing-mode: bt-lr;
+}

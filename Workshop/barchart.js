@@ -62,6 +62,7 @@ d3.tsv('./ExampleData/exampleData.tsv').then(function(data){
         .attr("class", "y_axis")
         .call(d3.axisLeft(yScale));
 
+    // ~~~ Tooltip ~~~
     svg.selectAll("rect").on("mouseover", function (d) {
         var xPosition = parseFloat(d3.select(this).attr("x")) + width / data.length / 2;
         var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + height / 2;
@@ -78,9 +79,41 @@ d3.tsv('./ExampleData/exampleData.tsv').then(function(data){
 
     svg.selectAll("rect").on("mouseout", function (d) {
         d3.select("#tooltip").classed("hidden", true);
-        d3.select(this)
-            .attr("fill", "rgb(0, 0, 150)");
+        d3.select(this).attr("fill", "rgb(0, 0, 150)");
     })
+
+    // ~~~ Selections ~~~
+
+    // ~~~ 1. Slider
+
+    d3.select("#slider")
+        .on("change", function() {
+            var threshold = +d3.select(this).node().value;
+            console.log(threshold)
+            svg.selectAll("rect")
+                .attr("fill", function(d) {
+                    return "rgb(0, 0, 150)";
+                })
+                .filter(function(d) {
+                    return d.dosen_differenz_zum_vortag <= threshold;
+                })
+                .attr("fill", "red");
+        });
+
+
+    // ~~~ 2. Random Colors
+    d3.selectAll("#button")
+      .on("click", function() {
+          svg.selectAll("rect").each(changeToRandomColor);
+      })
+
+    var changeToRandomColor = function(d, i) {
+        var colors = d3.schemeSet3;
+        var colorIndex = Math.round(Math.random() * 11);
+
+        d3.select(this)
+            .attr("fill", colors[colorIndex]);
+    }
 })
 
 
