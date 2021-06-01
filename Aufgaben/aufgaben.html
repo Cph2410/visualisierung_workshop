@@ -4,316 +4,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/d3-delaunay@5.3.0/dist/d3-delaunay.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous"></script>
     <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/monokai.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
-  <script>hljs.highlightAll();</script>
-    <script src="data/sonntagsfrage-04-21.js"></script>
-    <title>VI - Workshop</title>
-    <style>
-        .union {
-            fill:none;
-            stroke: black;
-            stroke-width: 1px;
-        }
-        .spd {
-            fill:none;
-            stroke: red;
-        }
-        .afd {
-            fill:none;
-            stroke: lightskyblue;
-        }
-        .fdp {
-            fill:none;
-            stroke: yellow;
-        }
-        .linke {
-            fill:none;
-            stroke: rebeccapurple;
-        }
-        .grüne {
-            fill:none;
-            stroke: green;
-        }
-        .piraten {
-            fill:none;
-            stroke: orange;
-        }
-        .andere {
-            fill:none;
-            stroke: grey;
-        }
-    </style>
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <title>VI - Aufgaben - Interactivity, Paths &amp; Selections</title>
 </head>
 <body>
     <main class="container mt-5">
         <div class="content">
-
-            <h2>Workshop zu Interaktivität, Pfaden und Selektionen</h2>
-
+            <h2>Aufgaben Interactivity, Paths und Selections</h2>
             <p>
-                Lorem Ipsum
+                Im Ordner Workshop befindet sich bereits vorbereiteter Code sowie Beispieldaten auf welchen die folgenden Aufgaben aufbauen.<br>
+                Der L&ouml;sungscode zu den Aufgaben befindet sich im folgenden Git Repository: <a href ="https://github.com/Cph2410/visualisierung_workshop">L&ouml;sungen</a>
             </p>
 
-            <div id="szenario" class="columns is-centered">
-
-            </div>
-
-            <script type="text/javascript">
-                /* Daten vorbereiten */
-                let timeParse = d3.timeParse("%d.%m.%y");
-                for (let i = 0; i < data.length; i++) {
-                    data[i].Datum = timeParse(data[i].Datum);
-                    data[i].FDP = parseInt(data[i].FDP);
-                    data[i].AfD = parseInt(data[i].AfD);
-                    data[i].Piraten = parseInt(data[i].Piraten);
-                    data[i].Andere = parseInt(data[i].Andere);
-
-                    // Aufgabe 4
-                    delete data[i].AfD;
-                    delete data[i].Piraten;
-                    delete data[i].Andere;
-                }
-
-                /*
-                    Die Variable data hält die Daten der Sonntagsfragen
-
-                    Struktur der Daten:
-                    "Datum": Date,
-                    "Union": int,
-                    "SPD": int,
-                    "AfD": int,
-                    "FDP": int,
-                    "Linke": int,
-                    "Grüne": int,
-                    "Andere": int
-                */
-
-                /* D3 Struktur */
-                //Width and height
-                let w = 960;
-                let h = 480;
-                let padding = 35;
-
-                // SVG Element erstellen
-                let svg = d3.select("#szenario")
-                    .append("svg")
-                    .attr("width", w)
-                    .attr("height", h);
-
-                // --------------------------------------------------
-                // Bonus Aufgabe 5
-                // Ermitteln Sie hier maximale Domaine für y
-
-                // --------------------------------------------------
-
-                // Aufgabe 1 + 4
-                // Erstellen Sie hier Ihre Skalen
-                let xScale = ;
-
-              
-                // Passen die die yScale für die Null Werte an
-                let yScale = ;
-
-                {
-                let unionLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.Union));
-
-                let spdLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.SPD));
-
-                let fdpLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.FDP));
-
-                let linkeLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.Linke));
-
-                let grueneLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.Grüne));
-
-                let afdLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.AfD));
-
-                let piratenLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.Piraten));
-
-                let andereLine = d3.line()
-                    .x(d => xScale(d.Datum))
-                    .y(d => yScale(d.Andere));
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "union")
-                    .attr("d", unionLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "spd")
-                    .attr("d", spdLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "fdp")
-                    .attr("d", fdpLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "linke")
-                    .attr("d", linkeLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "grüne")
-                    .attr("d", grueneLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "afd")
-                    .attr("d", afdLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "piraten")
-                    .attr("d", piratenLine);
-
-                svg.append("path")
-                    .datum(data)
-                    .attr("class", "andere")
-                    .attr("d", andereLine);
-                }
-                // ---------------------------------------------------
-                // Aufgabe 2 Achsen erstellen
-                let bottomAxis = ;
-                let leftAxis = ;
-                let rightAxis = ;
-
-                // ---------------------------------------------------
-                // Aufgabe 3 b) Eigenschaften verändern
-
-
-                
-                // ---------------------------------------------------
-                // Aufgabe 3 a) Eigenschaften verändern
-
-                svg.append("g")
-                    .attr("class", "bottomAxis")
-                    .attr("transform", "translate(0," + (h - padding) + ")")
-                    .call(bottomAxis)
-
-                svg.append("g")
-                    .attr("class", "leftAxis")
-                    .attr("transform", "translate(" + (padding) + ")")
-                    .call(leftAxis)
-
-                svg.append("g")
-                    .attr("class", "rightAxis")
-                    .attr("transform", "translate(" + (w - 2 * padding) + ")")
-                    .call(rightAxis)
-
-                // ---------------------------------------------------
-            </script>
-
-            <hr>
-
-            <h2>Aufgaben</h2>
-
             <div class="card mb-5">
                 <div class="card-content">
-                    <p class="title is-5">1. Skalen erstellen</p>
-                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>10</time> Minuten</p>
+                    <p class="title is-5">Line Chart erstellen</p>
+                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>6</time> Minuten</p>
                     <p>
-                        Erstellen Sie für die y-Achse eine lineare Skala die eine Bereich von 0 - 100 abbildet. Erstellen Sie für die x-Achse eine sinvolle temporale Skala auf Basis der Werte des Datensatzes.
+                        Erstellen Sie eine Line Chart, anhand welcher man die zusätzlich verimpften Dosen im Vergleich zum Vortag ablesen kann.<br>
+                        Die Line Chart sollte wie folgt aussehen:
                     </p>
+                    <img src="img/lineref.png"><a href="" style="width:1019px; height:290px"></a>
                     <h5>Tipps</h5>
                     <ul>
-                        <li>Die y-Achse ist einfach zu erstellen. Die Werte können direkt übergeben werden.</li>
-                        <li>Die x-Achse basiert auf dem Datum Feld des Datensatzes.</li>
-                    </ul>
-                    <h5>Links</h5>
-                    <ul>
-                        <li><a href="https://github.com/d3/d3-scale#linear-scales">Doku D3 lineare Skala</a></li>
-                        <li><a href="https://github.com/d3/d3-scale#time-scales">Doku D3 temporale Skala</a></li>
+                        <li>Mit ".dosen_differenz_zum_vortag" kann auf die f&uuml;r die differenz zum Vortag zugegriffen werden</li>
                     </ul>
                 </div>
             </div>
 
             <div class="card mb-5">
                 <div class="card-content">
-                    <p class="title is-5">2. Achsen hinzufügen</p>
-                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>10</time> Minuten</p>
+                    <p class="title is-5">Area Chart erstellen</p>
+                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>4</time> Minuten</p>
                     <p>
-                        Nachdem Sie die Skalen erstellt haben, fügen Sie nun die passenden Achsen hinzu. Erstellen Sie eine x- und zwei y-Achse, die Ihre Skalen widerspiegeln.
+                        Erstellen Sie nun einen Area Chart, basierend auf dem selben Datenset.<br>
+                        Die Area Chart sollte wie folgt aussehen:
                     </p>
-                    <h5>Tipps</h5>
-                    <ul>
-                        <li>Die beiden y-Achsen sollten sinnvoll transformiert werden.</li>
-                    </ul>
-                    <h5>Links</h5>
-                    <ul>
-                        <li><a href="https://github.com/d3/d3-axis">Doku D3 Achsen</a></li>
-                    </ul>
+                    <img src="img/arearef.png"><a href="" style="width:1019px; height:290px"></a>
                 </div>
             </div>
-            <div class="card mb-5">
-                <div class="card-content">
-                    <p class="title is-5">3. Eigenschaften verändern</p>
-                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>15</time> Minuten</p>
-                    <p>
-                        a) Die Labels der y-Achse stellen prozentuale Werte dar. Passen Sie die Achsen so an, dass hinter jedem Bezeichnung ein %-Zeichen hinzufgefügt wird. Verändern Sie zudem den Abstand, damit die Zahlen vollständig angezeigt wird. Überprüfen Sie dabei, ob Sie per <code>d3.format()</code>ein %-Zeichen hinzufügen können. Wenn dies nicht funktioniert, was müssten Sie ändern? Was wäre eine Alternative?<br>
-                        b) Die x-Achse zeigt die Jahre mit 2 Jahren Abstand an. Verändern Sie die Achse so, dass jedes Jahr ausgegeben wird.
-                    </p>
-                    <h5>Tipps</h5>
-                    <ul>
-                        <li>Das Padding des Graphen könnte geändert werden.</li>
-                    </ul>
-                    <h5>Links</h5>
-                    <ul>
-                        <li><a href="https://github.com/d3/d3-format">Doku D3 Format</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card mb-5">
-                <div class="card-content">
-                    <p class="title is-5">4. Vernachlässigte Werte</p>
-                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>10</time> Minuten</p>
-                    <p>
-                        Bislang wurden die AfD, die Piraten und die andere Parteiten ausgelassen. Binden Sie nun diese Daten mit ein und setzen Sie den die fehlenden Werte auf Null.
-                    </p>
-                    <h5>Tipps</h5>
-                    <ul>
-                        <li>Die Vorbereitung der Daten muss angepasst werden.</li>
-                        <li>Die Linien im Graphen sind bereits vorhande und müssen nicht extra hinzugefügt werden.</li>
-                        <li>Eine Skala benötigt die Funktion <code>.unkown()</code>.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card mb-5">
-                <div class="card-content">
-                    <p class="title is-5">(Bonus) 5. Skala anpassen und Datenverarbeitung</p>
-                    <p class="subtitle is-6 pt-1 has-text-grey">ca. <time>15</time> Minuten</p>
-                    <p>
-                        Für die y-Skala wurde ein fester Wert von 0-100 gesetzt. Finden Sie eine Möglichkeit den maximalen Wert aus den Daten zu suchen und für die y-Skala einzusetzen.
-                    </p>
-                    <h5>Tipps</h5>
-                    <ul>
-                        <li>Eine Schleife über die Daten wird benötigt.</li>
-                        <li>Die einzelnen Objekte können per <code>Object.values(data[i])</code> in ein Array umgeformt werden.</li>
-                        <li>Mit <code>Array.filter(Boolean)</code> lassen sich NaN Werte aus dem Array entfernen.</li>
-                    </ul>
-                </div>
-            </div>
+
+        </div>
+            
     </div>
 
 </main>
