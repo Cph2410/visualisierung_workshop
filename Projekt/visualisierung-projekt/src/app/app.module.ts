@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { AngularSplitModule } from 'angular-split';
+
 
 import { AppComponent } from './app.component';
 import { MapGraphComponent } from './components/map-graph/map-graph.component';
@@ -14,7 +16,8 @@ import { PanelOverviewComponent } from './components/panel-overview/panel-overvi
     PanelOverviewComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AngularSplitModule
   ],
   providers: [],
   bootstrap: [AppComponent]
