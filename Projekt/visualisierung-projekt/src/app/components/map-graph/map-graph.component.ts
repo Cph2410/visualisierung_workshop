@@ -21,6 +21,7 @@ export class MapGraphComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.createMapSvg();
   }
 
   private createMapSvg() {
@@ -42,10 +43,12 @@ export class MapGraphComponent implements OnInit {
 
     d3.json('/assets/nrwGeoJson.json')
       .then(function(data:any) {
-        const nrw: FeatureCollection = topo.feature(data, data.objects['nrwGeoJson'])
+        var nrw = topo.feature(data, data.objects.nrwGeoJson)
         svg.append('path')
-         .datum(nrw.feature)
+         .datum(nrw)
          .attr('d', path)
+
+         
       })
       .catch((error) =>{
         console.log(error);
