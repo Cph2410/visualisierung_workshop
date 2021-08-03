@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { svg } from 'd3';
-import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import * as topo from 'topojson-client';
-import { Objects, Topology } from 'topojson-specification';
 
 @Component({
   selector: 'app-map-graph',
@@ -26,7 +23,7 @@ export class MapGraphComponent implements OnInit {
 
   private createMapSvg() {
 
-    var path = d3.geoPath(null);
+    var path = d3.geoPath();
 
     var svg = d3.select('#map')
                  .append('svg')
@@ -35,12 +32,6 @@ export class MapGraphComponent implements OnInit {
                  .append('g')
                  .attr('transform', 'tanslate('+10+','+10+')');
 
-    // svg.append('path')
-    //    .datum(topo.feature(nrw, nrw.objects.subunits))
-    //    .attr('d', path)
-
-
-
     d3.json('/assets/nrwGeoJson.json')
       .then(function(data:any) {
         var nrw = topo.feature(data, data.objects.nrwGeoJson)
@@ -48,7 +39,7 @@ export class MapGraphComponent implements OnInit {
          .datum(nrw)
          .attr('d', path)
 
-         
+
       })
       .catch((error) =>{
         console.log(error);

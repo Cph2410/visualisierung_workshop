@@ -8,6 +8,7 @@ import { MapGraphComponent } from './components/map-graph/map-graph.component';
 import { GraphPanelComponent } from './components/graph-panel/graph-panel.component';
 import { PanelOverviewComponent } from './components/panel-overview/panel-overview.component';
 import { MainComponent } from './components/main/main.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MainComponent } from './components/main/main.component';
   ],
   imports: [
     BrowserModule,
-    AngularSplitModule
+    AngularSplitModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
