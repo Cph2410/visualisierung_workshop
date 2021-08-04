@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { geoAlbers } from 'd3';
+import { FeatureCollection } from 'geojson';
+import { Topology } from 'topojson-specification';
 import * as topo from 'topojson-client';
 
 @Component({
@@ -12,34 +15,41 @@ export class MapGraphComponent implements OnInit {
   
   private width = 800;
   private height = 600;
-
   
 
   constructor() { }
 
   ngOnInit(): void {
-    this.createMapSvg();
+    this.createMapSvg(this.width, this.height);
   }
 
-  private createMapSvg() {
-
-    var path = d3.geoPath();
-
-    var svg = d3.select('#map')
-                 .append('svg')
-                 .attr('width', this.width)
-                 .attr('height', this.height)
-                 .append('g')
-                 .attr('transform', 'tanslate('+10+','+10+')');
-
-    d3.json('/assets/nrwGeoJson.json')
+  private createMapSvg(width: number, height: number) {
+    // Load GeoData
+    d3.json('/assets/nrwTopoJson.topojson')
       .then(function(data:any) {
-        var nrw = topo.feature(data, data.objects.nrwGeoJson)
-        svg.append('path')
-         .datum(nrw)
-         .attr('d', path)
+        var geoData: Topology;
+        geoData = data as Topology;
+        var nrw = topo.feature(geoData, geoData.objects.nrwGeoJson) as FeatureCollection
 
+        
+    var projection = d3.geoMercator().fitSize([width,height], nrw);
 
+    var svg = d3.select('.map-wrapper')
+                 .append('svg')
+                 .attr('width', width)
+                 .attr('height', height)
+
+    var path =d3.geoPath().projection(projection);
+   
+    var g = svg.append('g');
+
+    g.attr('class', 'map')
+
+        g.selectAll('path')
+          .data(nrw.features)
+          .enter()
+          .append('path')
+          .attr('d', path);
       })
       .catch((error) =>{
         console.log(error);
