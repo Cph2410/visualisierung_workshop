@@ -4,6 +4,7 @@ import { geoAlbers } from 'd3';
 import { FeatureCollection } from 'geojson';
 import { Topology } from 'topojson-specification';
 import * as topo from 'topojson-client';
+import { DataClientService } from 'src/app/services/data-client.service';
 
 @Component({
   selector: 'app-map-graph',
@@ -11,16 +12,18 @@ import * as topo from 'topojson-client';
   styleUrls: ['./map-graph.component.scss']
 })
 export class MapGraphComponent implements OnInit {
-
   
   private width = 800;
   private height = 600;
-  
 
-  constructor() { }
+  constructor(private _dataService: DataClientService) { }
 
   ngOnInit(): void {
     this.createMapSvg(this.width, this.height);
+  }
+
+  selectCity(selectedCity: string) {
+    this._dataService.selectCityEvent.emit(selectedCity);
   }
 
   private createMapSvg(width: number, height: number) {

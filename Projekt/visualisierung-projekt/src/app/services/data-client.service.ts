@@ -6,7 +6,7 @@ import { DSVRowArray } from 'd3';
 @Injectable({
   providedIn: 'root'
 })
-export class DataClientServiceService {
+export class DataClientService {
 
   koeln: DSVRowArray;
   dortmund: DSVRowArray;
