@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 import { DSVRowArray } from 'd3';
@@ -7,6 +7,8 @@ import { DSVRowArray } from 'd3';
   providedIn: 'root'
 })
 export class DataClientService {
+
+  @Output() selectCityEvent = new EventEmitter<string>();
 
   koeln: DSVRowArray;
   dortmund: DSVRowArray;
@@ -42,5 +44,4 @@ export class DataClientService {
       this.muenchen = d3.csvParse(data);
     });
   }
-
 }
