@@ -20,7 +20,7 @@ export class DataClientService {
 
 
   constructor(private _httpClient: HttpClient) { 
-    this.loadData(); // Could also be Called in onInit in Component
+    this.loadData(); 
   }
 
 

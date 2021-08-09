@@ -6,6 +6,19 @@ import { Topology } from 'topojson-specification';
 import * as topo from 'topojson-client';
 import { DataClientService } from 'src/app/services/data-client.service';
 
+
+const citiesNrw = [
+  {name: "Koeln",
+  lat:  50.93541739830901, 
+  long: 6.945500982364537},
+  {name: "Dortmund",
+  lat:  51.509090025453766, 
+  long: 7.450872080986509 },
+  {name: "Duesseldorf",
+  lat:  51.221857299595584, 
+  long: 6.790319092260928} 
+]
+
 @Component({
   selector: 'app-map-graph',
   templateUrl: './map-graph.component.html',
@@ -15,6 +28,8 @@ export class MapGraphComponent implements OnInit {
   
   private width = 800;
   private height = 600;
+
+
 
   constructor(private _dataService: DataClientService) { }
 
@@ -34,7 +49,7 @@ export class MapGraphComponent implements OnInit {
         geoData = data as Topology;
         var nrw = topo.feature(geoData, geoData.objects.nrwGeoJson) as FeatureCollection
 
-        
+    // Projection of Map    
     var projection = d3.geoMercator().fitSize([width,height], nrw);
 
     var svg = d3.select('.map-wrapper')
@@ -45,14 +60,26 @@ export class MapGraphComponent implements OnInit {
     var path =d3.geoPath().projection(projection);
    
     var g = svg.append('g');
-
+    // Map
     g.attr('class', 'map')
-
         g.selectAll('path')
           .data(nrw.features)
           .enter()
           .append('path')
           .attr('d', path);
+        // Cities
+        g.selectAll('circle')
+          .data(citiesNrw)
+          .enter()
+           .append("circle")
+           .attr("cx", function(d) {
+                   return projection([d.long, d.lat])![0];
+           })
+           .attr("cy", function(d) {
+                   return projection([d.long, d.lat])![1];
+           })
+           .attr("r", 5)
+           .style("fill", "red");
       })
       .catch((error) =>{
         console.log(error);
