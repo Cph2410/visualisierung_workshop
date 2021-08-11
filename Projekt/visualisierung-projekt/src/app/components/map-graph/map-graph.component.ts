@@ -79,10 +79,32 @@ export class MapGraphComponent implements OnInit {
                    return projection([d.long, d.lat])![1];
            })
            .attr("r", 5)
-           .style("fill", "red");
+           .style("fill", "red")
+           .on("click", function(d) {
+              d3.selectAll('circle').style("fill", "red")
+              d3.select(this).style("fill", "green")
+           })
+           .on("mouseover", function(d, i) {
+              var xPosition = d3.pointer(d)[0]
+              var yPosition = d3.pointer(d)[1] - 15
+
+              g.append("text")
+                .attr("id", "tooltip")
+                .attr("x", xPosition)
+                .attr("y", yPosition)
+                .attr("text-anchor", "middle")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "11px")
+                .attr("font-weight", "bold")
+                .attr("fill", "white")
+                .text(i.name)
+           })
+           .on("mouseout", function(d) {
+            d3.select("#tooltip").remove()
+           });
       })
       .catch((error) =>{
         console.log(error);
-      })   
+      })  
   }
 }
