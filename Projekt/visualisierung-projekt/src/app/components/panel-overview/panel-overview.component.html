@@ -1,4 +1,4 @@
-<p>panel-overview works!</p>
-<div class="panel-wrapper">
-    <app-graph-panel></app-graph-panel>
+<div class="panel-wrapper" *ngFor="let city of displayedCities | keyvalue">
+    <app-graph-panel [City] = 'city.value'>
+    </app-graph-panel>
 </div>

@@ -42,6 +42,7 @@ export class MapGraphComponent implements OnInit {
   }
 
   private createMapSvg(width: number, height: number) {
+    const component = this;
     // Load GeoData
     d3.json('/assets/nrwTopoJson.topojson')
       .then(function(data:any) {
@@ -80,9 +81,10 @@ export class MapGraphComponent implements OnInit {
            })
            .attr("r", 5)
            .style("fill", "red")
-           .on("click", function(d) {
+           .on("click", function(d, i) {
               d3.selectAll('circle').style("fill", "red")
               d3.select(this).style("fill", "green")
+              component.selectCity(i.name)     
            })
            .on("mouseover", function(d, i) {
               var xPosition = d3.pointer(d)[0]

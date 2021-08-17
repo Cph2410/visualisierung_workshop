@@ -10,13 +10,7 @@ export class DataClientService {
 
   @Output() selectCityEvent = new EventEmitter<string>();
 
-  koeln: DSVRowArray;
-  dortmund: DSVRowArray;
-  duesseldorf: DSVRowArray;
-  frankfurt: DSVRowArray;
-  hamburg: DSVRowArray;
-  berlin: DSVRowArray;
-  muenchen: DSVRowArray;
+  Cities = new Map<string, DSVRowArray>();
 
 
   constructor(private _httpClient: HttpClient) { 
@@ -25,23 +19,28 @@ export class DataClientService {
 
 
   private loadData(): void {
+    this._httpClient.get('assets/Data/Output/Berlin.csv',{responseType: 'text'}).subscribe(data => {
+      this.Cities.set("Berlin",d3.csvParse(data));
+    });
     this._httpClient.get('assets/Data/Output/Koeln.csv',{responseType: 'text'}).subscribe(data => {
-      this.koeln = d3.csvParse(data);
+      this.Cities.set("Koeln",d3.csvParse(data));
     });
     this._httpClient.get('assets/Data/Output/Dortmund.csv',{responseType: 'text'}).subscribe(data => {
-      this.dortmund = d3.csvParse(data);
+      this.Cities.set("Dortmund",d3.csvParse(data));
     });
     this._httpClient.get('assets/Data/Output/Duesseldorf.csv',{responseType: 'text'}).subscribe(data => {
-      this.duesseldorf = d3.csvParse(data);
+      this.Cities.set("Duesseldorf",d3.csvParse(data));
     });
     this._httpClient.get('assets/Data/Output/Frankfurt.csv',{responseType: 'text'}).subscribe(data => {
-      this.frankfurt = d3.csvParse(data);
+      this.Cities.set("Frankfurt",d3.csvParse(data));
     });
     this._httpClient.get('assets/Data/Output/Hamburg.csv',{responseType: 'text'}).subscribe(data => {
-      this.hamburg = d3.csvParse(data);
+      this.Cities.set("Hamburg",d3.csvParse(data));
     });
     this._httpClient.get('assets/Data/Output/Muenchen.csv',{responseType: 'text'}).subscribe(data => {
-      this.muenchen = d3.csvParse(data);
+      this.Cities.set("Muenchen",d3.csvParse(data));
     });
   }
+
+  
 }

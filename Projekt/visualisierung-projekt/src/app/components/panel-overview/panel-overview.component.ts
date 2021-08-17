@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DSVRowArray } from 'd3';
 import { DataClientService} from 'src/app/services/data-client.service';
 
 @Component({
@@ -8,14 +9,31 @@ import { DataClientService} from 'src/app/services/data-client.service';
 })
 export class PanelOverviewComponent implements OnInit {
   
-  private _displayedCities: string[];
+  displayedCities = new Map<string, DSVRowArray>();
 
   constructor(private _dataService: DataClientService) { }
 
   ngOnInit(): void {
     this._dataService.selectCityEvent.subscribe((city: string) => {
-      console.log('Selected City: '+city)
+      this.toggleDisplayCity(city)
     })
+  }
+
+  private toggleDisplayCity(name: string){
+    try {
+      if((this.displayedCities.has(name))){
+        this.displayedCities.delete(name)
+      }
+      else {
+        this.displayedCities.set(name,this._dataService.Cities.get(name)!);
+      }
+      
+      console.log(this.displayedCities)
+    }
+    catch(err){
+      console.log(err)
+    }
+    
   }
 
 }

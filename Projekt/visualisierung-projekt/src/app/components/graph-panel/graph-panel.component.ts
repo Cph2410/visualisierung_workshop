@@ -12,8 +12,12 @@ export class GraphPanelComponent implements OnInit {
   
   @Input() City: DSVRowArray;
 
+  private width = 240;
+  private height = 80;
+  private margin = 20;
+
+
   // TODO: Put into seperate Service
   ngOnInit(): void {
-
   }
 }
