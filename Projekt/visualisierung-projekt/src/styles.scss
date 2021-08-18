@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+.line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    z-index: 7;
+}
+
+.x_axis {
+    stroke: black;
+    stroke-width: 1;
+  }
+  
+.y_axis {
+    stroke: black;
+    stroke-width: 1;
+}

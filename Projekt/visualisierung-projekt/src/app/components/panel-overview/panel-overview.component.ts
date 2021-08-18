@@ -27,8 +27,6 @@ export class PanelOverviewComponent implements OnInit {
       else {
         this.displayedCities.set(name,this._dataService.Cities.get(name)!);
       }
-      
-      console.log(this.displayedCities)
     }
     catch(err){
       console.log(err)

@@ -53,7 +53,6 @@ df_Koeln = pd.merge(df_Koeln, df_Mietpreise_Koeln, how='left', on='Quartal')
 ## Rename Jahr to Quartal and change Format
 df_Mietpreise_Berlin = df_Mietpreise_Berlin.rename(columns={'Jahr':'Quartal'})
 df_Mietpreise_Berlin = df_Mietpreise_Berlin.rename(columns={'Preis':'Mietpreis'})
-df_Mietpreise_Berlin['Quartal'] = 'Q2 ' + df_Mietpreise_Berlin['Quartal'].astype(str)
 
 df_Leerstand_Berlin= df_Leerstand_Berlin.rename(columns={'Jahr':'Quartal'})
 df_Leerstand_Berlin = df_Leerstand_Berlin.rename(columns={'Prozent':'Leerstand'})
@@ -68,7 +67,6 @@ df_Berlin = pd.merge(df_Berlin, df_Mietpreise_Berlin, how='left', on='Quartal')
 ## Rename Jahr to Quartal and change Format
 df_Mietpreise_Dortmund = df_Mietpreise_Dortmund.rename(columns={'Jahr':'Quartal'})
 df_Mietpreise_Dortmund = df_Mietpreise_Dortmund.rename(columns={'Preis':'Mietpreis'})
-df_Mietpreise_Dortmund['Quartal'] = 'Q2 ' + df_Mietpreise_Dortmund['Quartal'].astype(str)
 
 df_Leerstand_Dortmund= df_Leerstand_Dortmund.rename(columns={'Jahr':'Quartal'})
 df_Leerstand_Dortmund = df_Leerstand_Dortmund.rename(columns={'Prozent':'Leerstand'})
@@ -83,7 +81,6 @@ df_Dortmund = pd.merge(df_Dortmund, df_Mietpreise_Dortmund, how='left', on='Quar
 ## Rename Jahr to Quartal and change Format
 df_Mietpreise_Duesseldorf = df_Mietpreise_Duesseldorf.rename(columns={'Jahr':'Quartal'})
 df_Mietpreise_Duesseldorf = df_Mietpreise_Duesseldorf.rename(columns={'Preis':'Mietpreis'})
-df_Mietpreise_Duesseldorf['Quartal'] = 'Q2 ' + df_Mietpreise_Duesseldorf['Quartal'].astype(str)
 
 df_Leerstand_Duesseldorf= df_Leerstand_Duesseldorf.rename(columns={'Jahr':'Quartal'})
 df_Leerstand_Duesseldorf = df_Leerstand_Duesseldorf.rename(columns={'Prozent':'Leerstand'})
@@ -98,7 +95,6 @@ df_Duesseldorf = pd.merge(df_Duesseldorf, df_Mietpreise_Duesseldorf, how='left',
 ## Rename Jahr to Quartal and change Format
 df_Mietpreise_Frankfurt = df_Mietpreise_Frankfurt.rename(columns={'Jahr':'Quartal'})
 df_Mietpreise_Frankfurt = df_Mietpreise_Frankfurt.rename(columns={'Preis':'Mietpreis'})
-df_Mietpreise_Frankfurt['Quartal'] = 'Q2 ' + df_Mietpreise_Frankfurt['Quartal'].astype(str)
 
 df_Leerstand_Frankfurt= df_Leerstand_Frankfurt.rename(columns={'Jahr':'Quartal'})
 df_Leerstand_Frankfurt = df_Leerstand_Frankfurt.rename(columns={'Prozent':'Leerstand'})
@@ -113,7 +109,6 @@ df_Frankfurt = pd.merge(df_Frankfurt, df_Mietpreise_Frankfurt, how='left', on='Q
 ## Rename Jahr to Quartal and change Format
 df_Mietpreise_Hamburg = df_Mietpreise_Hamburg.rename(columns={'Jahr':'Quartal'})
 df_Mietpreise_Hamburg = df_Mietpreise_Hamburg.rename(columns={'Preis':'Mietpreis'})
-df_Mietpreise_Hamburg['Quartal'] = 'Q2 ' + df_Mietpreise_Hamburg['Quartal'].astype(str)
 
 df_Leerstand_Hamburg= df_Leerstand_Hamburg.rename(columns={'Jahr':'Quartal'})
 df_Leerstand_Hamburg = df_Leerstand_Hamburg.rename(columns={'Prozent':'Leerstand'})
@@ -128,8 +123,6 @@ df_Hamburg = pd.merge(df_Hamburg, df_Mietpreise_Hamburg, how='left', on='Quartal
 ## Rename Jahr to Quartal and change Format
 df_Mietpreise_Muenchen = df_Mietpreise_Muenchen.rename(columns={'Jahr':'Quartal'})
 df_Mietpreise_Muenchen = df_Mietpreise_Muenchen.rename(columns={'Preis':'Mietpreis'})
-df_Mietpreise_Muenchen['Quartal'] = 'Q2 ' + df_Mietpreise_Muenchen['Quartal'].astype(str)
-
 df_Leerstand_Muenchen= df_Leerstand_Muenchen.rename(columns={'Jahr':'Quartal'})
 df_Leerstand_Muenchen = df_Leerstand_Muenchen.rename(columns={'Prozent':'Leerstand'})
 df_Leerstand_Muenchen['Quartal'] = 'Q2 ' + df_Leerstand_Muenchen['Quartal'].astype(str)
@@ -139,6 +132,7 @@ df_Immobilienpreise_Muenchen = df_Immobilienpreise_Muenchen.rename(columns={'Pre
 df_Muenchen = pd.merge(df_Immobilienpreise_Muenchen, df_Leerstand_Muenchen, how='outer', on='Quartal')
 df_Muenchen = pd.merge(df_Muenchen, df_Mietpreise_Muenchen, how='left', on='Quartal')
 
+print("Result:")
 print(df_Koeln)
 df_Koeln.to_csv('./Data/Output/Koeln.csv')
 print(df_Berlin)

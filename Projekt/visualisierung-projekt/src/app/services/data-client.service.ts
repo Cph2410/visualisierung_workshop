@@ -2,6 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 import { DSVRowArray } from 'd3';
+import { City } from '../models/city';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class DataClientService {
 
   constructor(private _httpClient: HttpClient) { 
     this.loadData(); 
+    
   }
 
 
