@@ -28,6 +28,7 @@ export class MapGraphComponent implements OnInit {
   
   private width = 800;
   private height = 600;
+  
 
 
 
@@ -82,8 +83,8 @@ export class MapGraphComponent implements OnInit {
            .attr("r", 5)
            .style("fill", "red")
            .on("click", function(d, i) {
-              d3.selectAll('circle').style("fill", "red")
-              d3.select(this).style("fill", "green")
+              var color = this.style.fill == "red" ? "green" : "red";
+              d3.select(this).style("fill", color);
               component.selectCity(i.name)     
            })
            .on("mouseover", function(d, i) {
