@@ -66,7 +66,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
     var linefuncImmopreis = d3.line()
                   .defined((d:any) =>{return d.Immobilienpreis !== 0;})            
                   .x((d:any) => xScale(d.Quartal))
-                  .y((d:any) =>y2Scale(d.Immobilienpreis))
+                  .y((d:any) =>y2Scale((d.Immobilienpreis/10)))
     
     var linefuncLeerstand = d3.line()
                   .defined((d:any) =>{return d.Leerstand !== 0;})            
@@ -93,12 +93,14 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
 
   private parseData(City: DSVRowArray): City[]{
     var parsedData: City[] = [];
-    City.forEach(d => parsedData.push({Mietpreis: Number(d.Mietpreis), Quartal: this.parseDate(d.Quartal!), Leerstand: Number(d.Leerstand), Immobilienpreis: (Number(d.Immobilienpreis)/10)}));  
+    City.forEach(d => parsedData.push({Mietpreis: Number(d.Mietpreis), Quartal: this.parseDate(d.Quartal!), Leerstand: Number(d.Leerstand), Immobilienpreis: Number(d.Immobielienpreis)}));  
     parsedData.sort((a: City, b: City) => {
         return a.Quartal.getTime() - b.Quartal.getTime();
     });
     parsedData = parsedData.filter((City) => {return City.Quartal >= new Date("2004-01-01") })
-    
+    parsedData.forEach((City) => {
+      City.Immobilienpreis = City.Immobilienpreis/100
+    })
     return parsedData;
   }
 
