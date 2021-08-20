@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 import { DSVRowArray, svg } from 'd3';
@@ -9,30 +9,39 @@ import { City } from 'src/app/models/city';
   templateUrl: './graph-panel.component.html',
   styleUrls: ['./graph-panel.component.scss']
 })
-export class GraphPanelComponent implements OnInit {
+export class GraphPanelComponent implements OnInit, AfterViewInit {
   
   @Input() City: DSVRowArray;
-
-  private width = 240;
-  private height = 80;
-  private margin = 20;
-
+  @Input() Id: string;
+  private width = 400;
+  private height = 150;
+  private margin = 30;
 
   // TODO: Put into seperate Service
   ngOnInit(): void {
-    this.createChart(this.parseData(this.City))
+    
   }
 
+  ngAfterViewInit(): void {
+    this.createChart(this.parseData(this.City))
+  }
   private createChart (Citydata: any[]){
-    var svg = d3.select('.graph-wrapper')
-                 .append('svg')
+    console.log(Citydata)
+    var svg = d3.select('#'+this.Id)
                  .append('g')
+                 .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
 
     var xScale = d3.scaleTime().range([0,this.width]);
     var y1Scale = d3.scaleLinear().range([this.height, 0]);
+    var y2Scale = d3.scaleLinear().range([this.height, 0]);
+
     xScale.domain(<[Date, Date]>d3.extent(Citydata, function (d) { return d.Quartal; }));
-    y1Scale.domain([d3.min(Citydata, (d) => {return d.Mietpreis}),
-               d3.max(Citydata, (d) => {return d.Mietpreis})
+    y1Scale.domain([d3.min(Citydata, (d) => {return (d.Immobilienpreis)}),
+                d3.max(Citydata, (d) => {return d.Immobilienpreis})
+              ]);
+    
+    y2Scale.domain([d3.min(Citydata, (d) => {return d.Leerstand}),
+                d3.max(Citydata, (d) => {return d.Leerstand})
               ]);
 
     svg.append('g')
@@ -43,22 +52,48 @@ export class GraphPanelComponent implements OnInit {
     svg.append('g')
        .attr('class', 'y_axis')
        .call(d3.axisLeft(y1Scale))
-    console.log(Citydata)
-    var linefunc = d3.line()
+      
+    svg.append('g')
+       .attr('class', 'y_axis')
+       .attr("transform", "translate(" + this.width + " ,0)")   
+       .call(d3.axisRight(y2Scale))
+
+    var linefuncMietpreis = d3.line()
                   .defined((d:any) =>{return d.Mietpreis !== 0;})            
                   .x((d:any) => xScale(d.Quartal))
                   .y((d:any) =>y1Scale(d.Mietpreis))
-                  
+
+    var linefuncImmopreis = d3.line()
+                  .defined((d:any) =>{return d.Immobilienpreis !== 0;})            
+                  .x((d:any) => xScale(d.Quartal))
+                  .y((d:any) =>y2Scale(d.Immobilienpreis))
+    
+    var linefuncLeerstand = d3.line()
+                  .defined((d:any) =>{return d.Leerstand !== 0;})            
+                  .x((d:any) => xScale(d.Quartal))
+                  .y((d:any) =>y2Scale(d.Leerstand))
+      
 
     svg.append('path')
         .datum(Citydata)
-        .attr('class', 'line')
-        .attr('d', linefunc)
+        .attr('class', 'line-mietpreis')
+        .attr('d', linefuncMietpreis)
+
+    
+    svg.append('path')
+        .datum(Citydata)
+        .attr('class', 'line-leerstand')
+        .attr('d', linefuncLeerstand)
+      
+    svg.append('path')
+        .datum(Citydata)
+        .attr('class', 'line-immopreis')
+        .attr('d', linefuncImmopreis)
   }
 
   private parseData(City: DSVRowArray): City[]{
     var parsedData: City[] = [];
-    City.forEach(d => parsedData.push({Mietpreis: Number(d.Mietpreis), Quartal: this.parseDate(d.Quartal!), Leerstand: Number(d.Leerstand), Immobilienpreis: Number(d.Immobilienpreis)}));  
+    City.forEach(d => parsedData.push({Mietpreis: Number(d.Mietpreis), Quartal: this.parseDate(d.Quartal!), Leerstand: Number(d.Leerstand), Immobilienpreis: (Number(d.Immobilienpreis)/10)}));  
     parsedData.sort((a: City, b: City) => {
         return a.Quartal.getTime() - b.Quartal.getTime();
     });

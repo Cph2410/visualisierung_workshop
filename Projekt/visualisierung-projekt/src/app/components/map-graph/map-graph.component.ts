@@ -26,8 +26,8 @@ const citiesNrw = [
 })
 export class MapGraphComponent implements OnInit {
   
-  private width = 800;
-  private height = 600;
+  private width = 1000;
+  private height = 700;
   
 
 
@@ -35,6 +35,8 @@ export class MapGraphComponent implements OnInit {
   constructor(private _dataService: DataClientService) { }
 
   ngOnInit(): void {
+    //this.height = this.el.nativeElement.height;
+    //this.width = this.el.nativeElement.width;
     this.createMapSvg(this.width, this.height);
   }
 
@@ -61,6 +63,15 @@ export class MapGraphComponent implements OnInit {
 
     var path =d3.geoPath().projection(projection);
    
+    
+    // var bounds = d3.geoBounds(nrw),
+    // center = d3.geoCentroid(nrw);
+
+    // var distance = d3.geoDistance(bounds[0], bounds[1]),
+    // scale = height / distance / Math.sqrt(2);
+
+    // projection.scale(scale).center(center)
+
     var g = svg.append('g');
     // Map
     g.attr('class', 'map')
@@ -92,18 +103,16 @@ export class MapGraphComponent implements OnInit {
               var yPosition = d3.pointer(d)[1] - 15
 
               g.append("text")
-                .attr("id", "tooltip")
+                .attr("class", "map-tooltip")
                 .attr("x", xPosition)
                 .attr("y", yPosition)
                 .attr("text-anchor", "middle")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "11px")
+                .attr("font-family", "sans-serif")  
                 .attr("font-weight", "bold")
-                .attr("fill", "white")
                 .text(i.name)
            })
            .on("mouseout", function(d) {
-            d3.select("#tooltip").remove()
+            d3.select(".map-tooltip").remove()
            });
       })
       .catch((error) =>{

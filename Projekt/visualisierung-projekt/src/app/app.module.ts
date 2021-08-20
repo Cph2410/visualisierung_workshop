@@ -9,6 +9,8 @@ import { GraphPanelComponent } from './components/graph-panel/graph-panel.compon
 import { PanelOverviewComponent } from './components/panel-overview/panel-overview.component';
 import { MainComponent } from './components/main/main.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
     MapGraphComponent,
     GraphPanelComponent,
     PanelOverviewComponent,
-    MainComponent
+    MainComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

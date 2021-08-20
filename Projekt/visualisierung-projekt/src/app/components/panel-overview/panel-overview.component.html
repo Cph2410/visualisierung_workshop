@@ -1,4 +1,6 @@
-<div class="panel-wrapper" *ngFor="let city of displayedCities | keyvalue">
-    <app-graph-panel [City] = 'city.value'>
-    </app-graph-panel>
-</div>
+<ul style="list-style-type: none;">
+    <li class="panel-wrapper" *ngFor="let city of displayedCities | keyvalue">
+        <app-graph-panel [City] = 'city.value' [Id]= 'city.key'>
+        </app-graph-panel>
+    </li>
+</ul>
