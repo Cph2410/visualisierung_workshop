@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
-import { DSVRowArray, svg } from 'd3';
+import { DSVRowArray, ScaleTime, svg } from 'd3';
 import { City } from 'src/app/models/city';
 
 @Component({
@@ -13,9 +13,16 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   
   @Input() City: DSVRowArray;
   @Input() Id: string;
+
   private width = 400;
   private height = 150;
-  private margin = 30;
+  private marginLeft = 80;
+  private marginBottom = 30
+
+  private svg: any;
+  private xScale: ScaleTime<number, number, never>;
+  private y1Scale: any;
+  private y2Scale: any;
 
   // TODO: Put into seperate Service
   ngOnInit(): void {
@@ -23,72 +30,101 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // Create SVG after Component Init so that the Custom Id works for selection
+    this.svg = d3.select('#'+this.Id)
+                 .append('g')
+                 .attr("transform", "translate(" + this.marginLeft + "," + this.marginBottom + ")");
+    
     this.createChart(this.parseData(this.City))
   }
+
   private createChart (Citydata: any[]){
     console.log(Citydata)
-    var svg = d3.select('#'+this.Id)
-                 .append('g')
-                 .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
+    
 
-    var xScale = d3.scaleTime().range([0,this.width]);
-    var y1Scale = d3.scaleLinear().range([this.height, 0]);
-    var y2Scale = d3.scaleLinear().range([this.height, 0]);
+    this.xScale = d3.scaleTime().range([0,this.width]);
+    this.y1Scale = d3.scaleLinear().range([this.height, 0]);
+    this.y2Scale = d3.scaleLinear().range([this.height, 0]);
 
-    xScale.domain(<[Date, Date]>d3.extent(Citydata, function (d) { return d.Quartal; }));
-    y1Scale.domain([d3.min(Citydata, (d) => {return (d.Immobilienpreis)}),
+    this.xScale.domain(<[Date, Date]>d3.extent(Citydata, function (d) { return d.Quartal; }));
+    this.y1Scale.domain([d3.min(Citydata, (d) => {return (d.Immobilienpreis)}),
                 d3.max(Citydata, (d) => {return d.Immobilienpreis})
               ]);
     
-    y2Scale.domain([d3.min(Citydata, (d) => {return d.Leerstand}),
+    this.y2Scale.domain([d3.min(Citydata, (d) => {return d.Leerstand}),
                 d3.max(Citydata, (d) => {return d.Leerstand})
               ]);
-
-    svg.append('g')
+    
+    // X-Axis Time
+    this.svg.append('g')
        .attr('transform', 'translate(0,' + this.height + ')')
        .attr('class', 'x_axis')
-       .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%y") as unknown as (dv: number | { valueOf(): number; }, i: number) => string))
-
-    svg.append('g')
+       .call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat("%y") as unknown as (dv: number | { valueOf(): number; }, i: number) => string))
+    
+    // First Y-Axis Immobilien
+    this.svg.append('g')
        .attr('class', 'y_axis')
-       .call(d3.axisLeft(y1Scale))
-      
-    svg.append('g')
+       .call(d3.axisLeft(this.y1Scale))
+    
+    // Secodn Y-Axis Leerstand
+    this.svg.append('g')
        .attr('class', 'y_axis')
        .attr("transform", "translate(" + this.width + " ,0)")   
-       .call(d3.axisRight(y2Scale))
+       .call(d3.axisRight(this.y2Scale))
 
+    // Line Generator Mietpreis
     var linefuncMietpreis = d3.line()
                   .defined((d:any) =>{return d.Mietpreis !== 0;})            
-                  .x((d:any) => xScale(d.Quartal))
-                  .y((d:any) =>y1Scale(d.Mietpreis))
-
+                  .x((d:any) => this.xScale(d.Quartal))
+                  .y((d:any) =>this.y1Scale(d.Mietpreis))
+    
+    // Line Generator Immobilienpreis
     var linefuncImmopreis = d3.line()
                   .defined((d:any) =>{return d.Immobilienpreis !== 0;})            
-                  .x((d:any) => xScale(d.Quartal))
-                  .y((d:any) =>y2Scale((d.Immobilienpreis/10)))
+                  .x((d:any) => this.xScale(d.Quartal))
+                  .y((d:any) =>this.y2Scale((d.Immobilienpreis/10)))
     
+    // Line Generator Leerstand
     var linefuncLeerstand = d3.line()
                   .defined((d:any) =>{return d.Leerstand !== 0;})            
-                  .x((d:any) => xScale(d.Quartal))
-                  .y((d:any) =>y2Scale(d.Leerstand))
+                  .x((d:any) => this.xScale(d.Quartal))
+                  .y((d:any) => this.y2Scale(d.Leerstand))
       
-
-    svg.append('path')
+    // Line Miete
+    this.svg.append('path')
         .datum(Citydata)
         .attr('class', 'line-mietpreis')
         .attr('d', linefuncMietpreis)
 
-    
-    svg.append('path')
+    // Line Leerstand
+    this.svg.append('path')
         .datum(Citydata)
         .attr('class', 'line-leerstand')
         .attr('d', linefuncLeerstand)
-      
-    svg.append('path')
+    // Line Immo
+    this.svg.append('path')
         .datum(Citydata)
         .attr('class', 'line-immopreis')
         .attr('d', linefuncImmopreis)
+
+     // Add Axis labels
+    this.svg.append("text")
+        .style("font", "14px open-sans")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(" + (-this.marginLeft / 2) + "," + (this.height / 2) + ")rotate(-90)")
+        .text("Preis pro Quadratmeter");
+
+    this.svg.append("text")
+        .style("font", "14px open-sans")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(" + (this.width + (this.marginLeft/2)) + "," + (this.height / 2) + ")rotate(90)")
+        .text("Leerstand in Prozent");
+
+    this.svg.append("text")
+        .style("font", "14px open-sans")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(" + (this.width / 2) + "," + (this.height + (this.marginBottom)) + ")")
+        .text("Zeit");
   }
 
   private parseData(City: DSVRowArray): City[]{
