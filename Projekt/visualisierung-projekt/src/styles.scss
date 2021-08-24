@@ -3,21 +3,21 @@
 
 .line-mietpreis {
     fill: none;
-    stroke: black;
+    stroke: $mietpreis-color;
     stroke-width: 2;
     z-index: 7;
 }
 
 .line-leerstand {
     fill: none;
-    stroke: black;
+    stroke: $leerstand-color;
     stroke-width: 2;
     z-index: 7;
 }
 
 .line-immopreis {
     fill: none;
-    stroke: black;
+    stroke: $immopreis-color;
     stroke-width: 2;
     z-index: 7;
 }
@@ -42,20 +42,12 @@
     font-size: $tooltip-fontsize;
 }
 
-body {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-content: stretch;
-  align-items: stretch;
-  height: 100vh;
+app-root {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
 }
 
-app-root {
-  order: 0;
-  flex: 1 1 auto;
-  align-self: auto;
-  display: block;
-  overflow: hidden;
+html {
+    overflow: hidden;
 }

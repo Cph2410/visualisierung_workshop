@@ -41,7 +41,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   private createChart (Citydata: any[]){
     console.log(Citydata)
     
-
+    // Scales vereinheitlichen
     this.xScale = d3.scaleTime().range([0,this.width]);
     this.y1Scale = d3.scaleLinear().range([this.height, 0]);
     this.y2Scale = d3.scaleLinear().range([this.height, 0]);

@@ -1,0 +1,20 @@
+@import '../styles/variables.scss';
+
+.main .as-split-gutter {
+    height: auto!important;
+    background-color: grey;
+}
+
+.main {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+app-header {
+    background-color: $background-color;
+}
+
+app-footer {
+    background-color: $background-color;
+}

@@ -1,1 +1,14 @@
-<app-main></app-main>
+<div class="main" fxLayout="column" fxLayoutAlign="start">
+    <app-header fxFlex="10%"></app-header>
+    <div class="content-wrapper" fxFlex>
+      <as-split direction="horizontal">
+        <as-split-area [size]="38">
+          <app-panel-overview></app-panel-overview>
+        </as-split-area>
+        <as-split-area [size]="62">
+          <app-map-graph></app-map-graph>
+        </as-split-area>
+      </as-split>  
+    </div>
+    <app-footer fxFlex="5%"></app-footer>
+  </div>
