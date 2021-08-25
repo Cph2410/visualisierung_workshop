@@ -10,8 +10,17 @@ import { DataClientService} from 'src/app/services/data-client.service';
 export class PanelOverviewComponent implements OnInit {
   
   displayedCities = new Map<string, DSVRowArray>();
+  maxPreis: number;
+  maxLeerstand: number;
+  minPreis: number;
+  minLeerstand: number;
 
-  constructor(private _dataService: DataClientService) { }
+  constructor(private _dataService: DataClientService) { 
+    this.maxPreis = this._dataService.maxPreis;
+    this.maxLeerstand = this._dataService.maxLeerstand;
+    this.minPreis = this._dataService.minPreis;
+    this.minLeerstand = this._dataService.minLeerstand;
+  }
 
   ngOnInit(): void {
     this._dataService.selectCityEvent.subscribe((city: string) => {

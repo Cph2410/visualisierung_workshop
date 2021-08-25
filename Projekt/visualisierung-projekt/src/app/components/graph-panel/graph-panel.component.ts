@@ -13,6 +13,10 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   
   @Input() City: DSVRowArray;
   @Input() Id: string;
+  @Input() maxPreis: number;
+  @Input() maxLeerstand: number;
+  @Input() minPreis: number;
+  @Input() minLeerstand: number;
 
   private width = 400;
   private height = 150;
@@ -47,14 +51,18 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
     this.y2Scale = d3.scaleLinear().range([this.height, 0]);
 
     this.xScale.domain(<[Date, Date]>d3.extent(Citydata, function (d) { return d.Quartal; }));
-    this.y1Scale.domain([d3.min(Citydata, (d) => {return (d.Immobilienpreis)}),
-                d3.max(Citydata, (d) => {return d.Immobilienpreis})
-              ]);
+    // this.y1Scale.domain([d3.min(Citydata, (d) => {return (d.Immobilienpreis)}),
+    //             d3.max(Citydata, (d) => {return d.Immobilienpreis})
+    //           ]);
     
-    this.y2Scale.domain([d3.min(Citydata, (d) => {return d.Leerstand}),
-                d3.max(Citydata, (d) => {return d.Leerstand})
-              ]);
+    // this.y2Scale.domain([d3.min(Citydata, (d) => {return d.Leerstand}),
+    //             d3.max(Citydata, (d) => {return d.Leerstand})
+    //           ]);
     
+    this.y1Scale.domain([this.minPreis,this.maxPreis]);
+
+    this.y2Scale.domain([this.minLeerstand, this.maxLeerstand]);
+
     // X-Axis Time
     this.svg.append('g')
        .attr('transform', 'translate(0,' + this.height + ')')
@@ -110,21 +118,32 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
      // Add Axis labels
     this.svg.append("text")
         .style("font", "14px open-sans")
+        .attr("class", "text-y1-axis")
         .attr("text-anchor", "middle")
         .attr("transform", "translate(" + (-this.marginLeft / 2) + "," + (this.height / 2) + ")rotate(-90)")
         .text("Preis pro Quadratmeter");
 
     this.svg.append("text")
         .style("font", "14px open-sans")
+        .attr("class", "text-y2-axis")
         .attr("text-anchor", "middle")
         .attr("transform", "translate(" + (this.width + (this.marginLeft/2)) + "," + (this.height / 2) + ")rotate(90)")
         .text("Leerstand in Prozent");
 
     this.svg.append("text")
         .style("font", "14px open-sans")
+        .attr("class", "text-x-axis")
         .attr("text-anchor", "middle")
         .attr("transform", "translate(" + (this.width / 2) + "," + (this.height + (this.marginBottom)) + ")")
         .text("Zeit");
+
+    // Add City Name
+    this.svg.append("text")
+        .style("font", "14px open-sans")
+        .attr("class", "text-name")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(" + (this.width / 2) + "," + 0 + ")")
+        .text(this.Id);
   }
 
   private parseData(City: DSVRowArray): City[]{
