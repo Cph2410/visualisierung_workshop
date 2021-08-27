@@ -103,17 +103,75 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
         .datum(Citydata)
         .attr('class', 'line-mietpreis')
         .attr('d', linefuncMietpreis)
+        .on("mouseover", (d: any, i: any) => {
+          var xPosition = d3.pointer(d)[0]
+          var yPosition = d3.pointer(d)[1]
+          
+          var mietpreisIndex = Math.round((xPosition / this.width * (i.length - 1)))
+
+          d3.select('#mietpreis-tooltip')
+            .style("left", xPosition + "px")
+            .style("top", yPosition + "px")
+            .select("#value")
+            .text(`${i[mietpreisIndex].Mietpreis}`)
+
+          d3.select("#mietpreis-tooltip").classed("hidden", false)
+
+        })
+        .on("mouseout", function() {
+        d3.select("#mietpreis-tooltip").classed("hidden", true)
+        });
 
     // Line Leerstand
     this.svg.append('path')
         .datum(Citydata)
         .attr('class', 'line-leerstand')
         .attr('d', linefuncLeerstand)
+        .on("mouseover", (d: any, i: any) => {
+          var xPosition = d3.pointer(d)[0]
+          var yPosition = d3.pointer(d)[1]
+          
+          var leerstandIndex = Math.round((xPosition / this.width * (i.length - 1)))
+
+          d3.select('#leerstand-tooltip')
+            .style("left", xPosition + "px")
+            .style("top", yPosition + "px")
+            .select("#value")
+            .text(`${i[leerstandIndex].Leerstand}`)
+
+          d3.select("#leerstand-tooltip").classed("hidden", false)
+
+        })
+        .on("mouseout", function() {
+        d3.select("#leerstand-tooltip").classed("hidden", true)
+        });
+
     // Line Immo
     this.svg.append('path')
         .datum(Citydata)
         .attr('class', 'line-immopreis')
         .attr('d', linefuncImmopreis)
+        .on("mouseover", (d: any, i: any) => {
+          var xPosition = d3.pointer(d)[0]
+          var yPosition = d3.pointer(d)[1]
+          
+          var immopreisIndex = Math.round((xPosition / this.width * (i.length - 1)))
+
+          d3.select('#immopreis-tooltip')
+            .style("left", xPosition + "px")
+            .style("top", yPosition + "px")
+            .select("#value")
+            .text(`${i[immopreisIndex].Immobilienpreis}`)
+
+          d3.select("#immopreis-tooltip").classed("hidden", false)
+
+        })
+        .on("mouseout", function() {
+        d3.select("#immopreis-tooltip").classed("hidden", true)
+        });
+
+    
+
 
      // Add Axis labels
     this.svg.append("text")
