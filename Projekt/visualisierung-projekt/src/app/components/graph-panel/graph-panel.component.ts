@@ -74,7 +74,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
        .attr('class', 'y_axis')
        .call(d3.axisLeft(this.y1Scale))
     
-    // Secodn Y-Axis Leerstand
+    // Second Y-Axis Leerstand
     this.svg.append('g')
        .attr('class', 'y_axis')
        .attr("transform", "translate(" + this.width + " ,0)")   
@@ -173,7 +173,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
     
 
 
-     // Add Axis labels
+    // Add Axis labels
     this.svg.append("text")
         .style("font", "14px open-sans")
         .attr("class", "text-y1-axis")

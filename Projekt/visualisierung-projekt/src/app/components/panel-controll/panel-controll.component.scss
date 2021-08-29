@@ -1,0 +1,26 @@
+@import '../../../styles/variables.scss';
+
+.panel-control-button {
+    border-radius: 20px;
+    min-height: 20px;
+    min-width: 60px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+.control-wrapper {
+    height: 90%;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: $boder-color;
+}
+
+.radio-control {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.filter-control-buttons {
+    margin-top: 20px;
+}
+

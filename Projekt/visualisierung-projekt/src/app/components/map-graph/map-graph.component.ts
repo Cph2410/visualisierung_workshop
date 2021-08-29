@@ -27,7 +27,7 @@ const citiesNrw = [
 export class MapGraphComponent implements OnInit {
   
   private width = 1000;
-  private height = 700;
+  private height = 650;
   private widthDe = 280;
   private heightDe = 170;
 

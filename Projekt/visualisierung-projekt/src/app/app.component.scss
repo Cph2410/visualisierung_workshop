@@ -6,9 +6,17 @@
 }
 
 .main {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
+}
+
+.content-wrapper {
+    height: 100%;
+}
+
+app-panel-container {
+    height: 100%;
 }
 
 app-header {
@@ -17,4 +25,11 @@ app-header {
 
 app-footer {
     background-color: $background-color;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+}
+
+app-panel-container {
+    height: 100%;
 }

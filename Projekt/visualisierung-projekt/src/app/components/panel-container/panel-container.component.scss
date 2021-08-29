@@ -1,0 +1,13 @@
+.panel-container-wrapper {
+    height: 100%;
+}
+
+app-panel-control {
+    margin-bottom: 30px;
+}
+
+app-panel-overview{
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+

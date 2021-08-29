@@ -40,7 +40,6 @@ export class PanelOverviewComponent implements OnInit {
     catch(err){
       console.log(err)
     }
-    
   }
 
 }

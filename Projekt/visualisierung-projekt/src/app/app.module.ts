@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularSplitModule } from 'angular-split';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { MapGraphComponent } from './components/map-graph/map-graph.component';
 import { GraphPanelComponent } from './components/graph-panel/graph-panel.component';
@@ -10,6 +10,9 @@ import { PanelOverviewComponent } from './components/panel-overview/panel-overvi
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { PanelControllComponent } from './components/panel-controll/panel-controll.component';
+import { PanelContainerComponent } from './components/panel-container/panel-container.component';
+import { CompareModalComponent } from './components/compare-modal/compare-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,17 @@ import { FooterComponent } from './components/footer/footer.component';
     GraphPanelComponent,
     PanelOverviewComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    PanelControllComponent,
+    PanelContainerComponent,
+    CompareModalComponent
   ],
   imports: [
     BrowserModule,
     AngularSplitModule,
     HttpClientModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

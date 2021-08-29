@@ -13,7 +13,7 @@ export class DataClientService {
 
   Cities = new Map<string, DSVRowArray>();
   maxPreis = 80;
-  maxLeerstand = 5.1;
+  maxLeerstand = 6;
 
   minPreis = 4;
   minLeerstand = 0;

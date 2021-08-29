@@ -1,14 +1,8 @@
 <div class="main" fxLayout="column" fxLayoutAlign="start">
     <app-header fxFlex="10%"></app-header>
-    <div class="content-wrapper" fxFlex>
-      <as-split direction="horizontal">
-        <as-split-area [size]="38">
-          <app-panel-overview></app-panel-overview>
-        </as-split-area>
-        <as-split-area [size]="62">
-          <app-map-graph></app-map-graph>
-        </as-split-area>
-      </as-split>  
+    <div class="content-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start start">
+      <app-panel-container fxFlex="33%"></app-panel-container>
+      <app-map-graph fxFlex="67%"></app-map-graph>
     </div>
-    <app-footer fxFlex="5%"></app-footer>
-  </div>
+    <app-footer></app-footer>
+</div>
