@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DSVRowArray } from 'd3';
-import { DataClientService } from 'src/app/services/data-client.service';
+import { DataService } from 'src/app/services/data.service';
 import { CompareModalComponent } from '../compare-modal/compare-modal.component';
 
 @Component({
@@ -11,32 +10,16 @@ import { CompareModalComponent } from '../compare-modal/compare-modal.component'
 })
 export class PanelControllComponent implements OnInit {
 
-  displayedCities= new Map<string, DSVRowArray>();
+  
 
-  constructor(private _modalService: NgbModal, private _dataService: DataClientService) { }
+  constructor(private _modalService: NgbModal, private _dataService: DataService) { }
 
   ngOnInit(): void {
-    this._dataService.selectCityEvent.subscribe((city: string) => {
-      this.toggleDisplayCity(city)
-    })
+
   }
 
   openCompareModal() {
-    const modalRef = this._modalService.open(CompareModalComponent)
-    modalRef.componentInstance.citiesToCompare = this.displayedCities;
-  }
-
-  private toggleDisplayCity(name: string){
-    try {
-      if((this.displayedCities.has(name))){
-        this.displayedCities.delete(name)
-      }
-      else {
-        this.displayedCities.set(name,this._dataService.Cities.get(name)!);
-      }
-    }
-    catch(err){
-      console.log(err)
-    }
+    const modalRef = this._modalService.open(CompareModalComponent,  { windowClass : "compare-modal"})
+    modalRef.componentInstance.citiesToCompare = this._dataService.displayedCities;
   }
 }

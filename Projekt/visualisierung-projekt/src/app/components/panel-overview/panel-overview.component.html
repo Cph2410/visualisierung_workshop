@@ -1,11 +1,7 @@
 <ul style="list-style-type: none;">
-    <li class="panel-wrapper" *ngFor="let city of displayedCities | keyvalue">
+    <li class="panel-wrapper" *ngFor="let city of dataService.displayedCities | keyvalue">
         <app-graph-panel [City] = 'city.value' 
                          [Id]= 'city.key'
-                         [maxLeerstand]="this.maxLeerstand"
-                         [maxPreis]="this.maxPreis"
-                         [minLeerstand]="this.minLeerstand"
-                         [minPreis]="this.minPreis"
         >
         </app-graph-panel>
     </li>

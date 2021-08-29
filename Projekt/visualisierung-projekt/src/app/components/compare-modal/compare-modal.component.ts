@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { DSVRowArray, ScaleTime, svg } from 'd3';
 import { City } from 'src/app/models/city';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-compare-modal',
@@ -19,28 +20,24 @@ export class CompareModalComponent implements OnInit {
   private marginLeft = 80;
   private marginBottom = 30
 
-  private maxPreis= 80;
-  private maxLeerstand=6;
-  private minPreis=4;
-  private minLeerstand=0;
-
   private svg: any;
   private xScale: ScaleTime<number, number, never>;
   private y1Scale: any;
   private y2Scale: any;
 
-  constructor() { }
+  constructor(private _dataService: DataService) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.citiesToCompare)
-
-    this.createChart(this.parseData(this.citiesToCompare.get("Dortmund")!))
+    this.createCompareChart(this._dataService.parseData(this.citiesToCompare.values().next().value));
+    this.citiesToCompare.forEach(City => {
+      this.plotCompareChart(this._dataService.parseData(City))
+    });
   }
 
-  createChart(Citydata: any[]) {
+  private createCompareChart(Citydata: any[]) {
 
     this.svg = d3.select('.compare-graph')
                  .append('g')
@@ -50,12 +47,12 @@ export class CompareModalComponent implements OnInit {
     this.xScale = d3.scaleTime().range([0,this.width]);
     this.y1Scale = d3.scaleLinear().range([this.height, 0]);
     this.y2Scale = d3.scaleLinear().range([this.height, 0]);
-
+    // TODO: One Date for every Plot
     this.xScale.domain(<[Date, Date]>d3.extent(Citydata, function (d) { return d.Quartal; }));
     
-    this.y1Scale.domain([this.minPreis,this.maxPreis]);
+    this.y1Scale.domain([this._dataService.minPreis,this._dataService.maxPreis]);
 
-    this.y2Scale.domain([this.minLeerstand, this.maxLeerstand]);
+    this.y2Scale.domain([this._dataService.minLeerstand, this._dataService.maxLeerstand]);
 
     // X-Axis Time
     this.svg.append('g')
@@ -73,9 +70,6 @@ export class CompareModalComponent implements OnInit {
         .attr('class', 'y_axis')
         .attr("transform", "translate(" + this.width + " ,0)")   
         .call(d3.axisRight(this.y2Scale))
-
-
-
 
     // Add Axis labels
     this.svg.append("text")
@@ -108,45 +102,93 @@ export class CompareModalComponent implements OnInit {
         .text(this.Id);
   }
 
+  plotCompareChart(Citydata: any[]) {
+    // Line Generator Mietpreis
+    var linefuncMietpreis = d3.line()
+        .defined((d:any) =>{return d.Mietpreis !== 0;})            
+        .x((d:any) => this.xScale(d.Quartal))
+        .y((d:any) =>this.y1Scale(d.Mietpreis))
 
-  private parseData(City: DSVRowArray): City[]{
-    var parsedData: City[] = [];
-    City.forEach(d => parsedData.push({Mietpreis: Number(d.Mietpreis), Quartal: this.parseDate(d.Quartal!), Leerstand: Number(d.Leerstand), Immobilienpreis: Number(d.Immobielienpreis)}));  
-    parsedData.sort((a: City, b: City) => {
-        return a.Quartal.getTime() - b.Quartal.getTime();
+    // Line Generator Immobilienpreis
+    var linefuncImmopreis = d3.line()
+        .defined((d:any) =>{return d.Immobilienpreis !== 0;})            
+        .x((d:any) => this.xScale(d.Quartal))
+        .y((d:any) =>this.y2Scale((d.Immobilienpreis/10)))
+
+    // Line Generator Leerstand
+    var linefuncLeerstand = d3.line()
+        .defined((d:any) =>{return d.Leerstand !== 0;})            
+        .x((d:any) => this.xScale(d.Quartal))
+        .y((d:any) => this.y2Scale(d.Leerstand))
+
+    // Line Miete
+    this.svg.append('path')
+            .datum(Citydata)
+            .attr('class', 'line-mietpreis')
+            .attr('d', linefuncMietpreis)
+            .on("mouseover", (d: any, i: any) => {
+              var xPosition = d3.pointer(d)[0]
+              var yPosition = d3.pointer(d)[1]
+
+              var mietpreisIndex = Math.round((xPosition / this.width * (i.length - 1)))
+
+              d3.select('#mietpreis-tooltip')
+                .style("left", xPosition + "px")
+                .style("top", yPosition + "px")
+                .select("#value")
+                .text(`${i[mietpreisIndex].Mietpreis}`)
+
+              d3.select("#mietpreis-tooltip").classed("hidden", false)
+            })
+    .on("mouseout", function() {
+      d3.select("#mietpreis-tooltip").classed("hidden", true)
     });
-    parsedData = parsedData.filter((City) => {return City.Quartal >= new Date("2004-01-01") })
-    parsedData.forEach((City) => {
-      City.Immobilienpreis = City.Immobilienpreis/100
-    })
-    return parsedData;
-  }
 
-  private parseDate(QuartalDate: string): Date{
-    if( QuartalDate !== null){
-      var splitDate = QuartalDate.split(" ", 2);
-      
-      switch(splitDate[0]){
-        case "Q1":
-          return new Date(splitDate[1]+"-01-01")
-          break;
-        case "Q2":
-          return new Date(splitDate[1]+"-05-01")
-          break;
-        case "Q3":
-          return new Date(splitDate[1]+"-08-01")
-          break;
-        case "Q4":
-          return new Date(splitDate[1]+"-11-01")
-          break;
-        default:
-          return new Date('01 Jan 1970 00:00:00 GMT')
-          break;
-      }
-    }
-    else {
-      return new Date('01 Jan 1970 00:00:00 GMT')
-    }
+    // Line Leerstand
+    this.svg.append('path')
+    .datum(Citydata)
+    .attr('class', 'line-leerstand')
+    .attr('d', linefuncLeerstand)
+    .on("mouseover", (d: any, i: any) => {
+      var xPosition = d3.pointer(d)[0]
+      var yPosition = d3.pointer(d)[1]
+
+      var leerstandIndex = Math.round((xPosition / this.width * (i.length - 1)))
+
+      d3.select('#leerstand-tooltip')
+        .style("left", xPosition + "px")
+        .style("top", yPosition + "px")
+        .select("#value")
+        .text(`${i[leerstandIndex].Leerstand}`)
+
+      d3.select("#leerstand-tooltip").classed("hidden", false)
+    })
+    .on("mouseout", function() {
+      d3.select("#leerstand-tooltip").classed("hidden", true)
+    });
+
+    // Line Immo
+    this.svg.append('path')
+    .datum(Citydata)
+    .attr('class', 'line-immopreis')
+    .attr('d', linefuncImmopreis)
+    .on("mouseover", (d: any, i: any) => {
+      var xPosition = d3.pointer(d)[0]
+      var yPosition = d3.pointer(d)[1]
+
+      var immopreisIndex = Math.round((xPosition / this.width * (i.length - 1)))
+
+      d3.select('#immopreis-tooltip')
+        .style("left", xPosition + "px")
+        .style("top", yPosition + "px")
+        .select("#value")
+        .text(`${i[immopreisIndex].Immobilienpreis}`)
+
+      d3.select("#immopreis-tooltip").classed("hidden", false)
+    })
+    .on("mouseout", function() {
+      d3.select("#immopreis-tooltip").classed("hidden", true)
+    });
   }
 
 }

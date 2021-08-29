@@ -35,8 +35,6 @@ export class MapGraphComponent implements OnInit {
   constructor(private _dataService: DataClientService) { }
 
   ngOnInit(): void {
-    //this.height = this.el.nativeElement.height;
-    //this.width = this.el.nativeElement.width;
     this.createMapsSvg(this.width, this.height, this.widthDe, this.heightDe);
   }
 

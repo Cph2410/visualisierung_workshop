@@ -2,7 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 import { DSVRowArray } from 'd3';
-import { City } from '../models/city';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,6 @@ export class DataClientService {
   @Output() selectCityEvent = new EventEmitter<string>();
 
   Cities = new Map<string, DSVRowArray>();
-  maxPreis = 80;
-  maxLeerstand = 6;
-
-  minPreis = 4;
-  minLeerstand = 0;
 
   constructor(private _httpClient: HttpClient) { 
     this.loadData(); 
