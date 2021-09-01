@@ -28,4 +28,8 @@ export class HeaderComponent implements OnInit {
       map(term => term.length < 1 ? []
         : cities.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
+
+  onEnter() {
+    this._dataClientService.selectCityEvent.emit(this.model);
+  }
 }

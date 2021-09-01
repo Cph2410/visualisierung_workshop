@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { DSVRowArray } from 'd3';
 import { City } from '../models/city';
 import { DataClientService } from './data-client.service';
+import * as d3 from 'd3';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class DataService {
   readonly maxLeerstand = 6;
   readonly earliestDate = new Date("2004-01-01");
   readonly latestDate = new Date("2021-01-01");
+
+  displayCityGraphs: Boolean = false;
 
   displayedCities= new Map<string, DSVRowArray>();
 
@@ -76,4 +79,5 @@ export class DataService {
       console.log(err)
     }
   }
+
 }

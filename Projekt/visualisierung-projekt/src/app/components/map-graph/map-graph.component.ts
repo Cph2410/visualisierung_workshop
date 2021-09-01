@@ -95,10 +95,12 @@ export class MapGraphComponent implements OnInit {
                 .append('path')
                 .attr('d', path)
                 .attr('style', 'stroke: red')
+                .attr('id', 'Koeln-heat')
                 .style("fill", () => { return myColor(11.3)})
                 .on("click", function() {
                   var color = this.style.stroke == "red" ? "green" : "red";
                   d3.select(this).style("stroke", color);
+                  console.log('Test')
                   component.selectCity("Koeln")     
                 })
                 .on("mouseover", function(d) {
@@ -135,6 +137,7 @@ export class MapGraphComponent implements OnInit {
                 .append('path')
                 .attr('d', path)
                 .attr('style', 'stroke: red')
+                .attr('id', 'Dortmund-heat')
                 .style("fill", () => { return myColor(6.87)})
                 .on("click", function() {
                   var color = this.style.stroke == "red" ? "green" : "red";
@@ -175,6 +178,7 @@ export class MapGraphComponent implements OnInit {
                 .append('path')
                 .attr('d', path)
                 .attr('style', 'stroke: red')
+                .attr('id', 'Duesseldorf-heat')
                 .style("fill", () => { return myColor(10.83)})
                 .on("click", function() {
                   var color = this.style.stroke == "red" ? "green" : "red";

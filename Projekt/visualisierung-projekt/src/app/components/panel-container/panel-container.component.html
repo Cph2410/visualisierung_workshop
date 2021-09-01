@@ -1,9 +1,11 @@
 <div class="panel-container-wrapper" fxLayout="column" fxLayoutAlign="start">
-    <div class="conditional-wrapper" *ngIf="displayCities; else elseBlock">
+    <div class="conditional-wrapper" *ngIf="this.dataService.displayCityGraphs; else elseBlock">
         <app-panel-overview></app-panel-overview>
     </div>
     <ng-template class="conditional-wrapper" #elseBlock>
-        Ranking
+        <div class="conditional-wrapper">
+            Ranking
+        </div>
     </ng-template>
     <app-panel-control fxFlex="10%"></app-panel-control>
 </div>

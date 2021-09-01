@@ -9,9 +9,9 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class PanelContainerComponent implements OnInit {
 
-  displayCities: Boolean = false;
+  
 
-  constructor(private _dataService: DataService, private _dataClientService: DataClientService) { }
+  constructor(public dataService: DataService, private _dataClientService: DataClientService) { }
 
   ngOnInit(): void {
     this._dataClientService.selectCityEvent.subscribe((city: string) => {
@@ -20,7 +20,7 @@ export class PanelContainerComponent implements OnInit {
   }
 
   private CityAddedHandle() {
-    if(this._dataService.displayedCities.size === 0) {
+    if(this.dataService.displayedCities.size === 0) {
       this.toggleView(false)
     }
     else {
@@ -29,6 +29,6 @@ export class PanelContainerComponent implements OnInit {
   }
 
   private toggleView(state: Boolean) {
-    this.displayCities = state;
+    this.dataService.displayCityGraphs = state;
   }
 }
