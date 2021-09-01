@@ -13,6 +13,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PanelControllComponent } from './components/panel-controll/panel-controll.component';
 import { PanelContainerComponent } from './components/panel-container/panel-container.component';
 import { CompareModalComponent } from './components/compare-modal/compare-modal.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CompareModalComponent } from './components/compare-modal/compare-modal.
     AngularSplitModule,
     HttpClientModule,
     FlexLayoutModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

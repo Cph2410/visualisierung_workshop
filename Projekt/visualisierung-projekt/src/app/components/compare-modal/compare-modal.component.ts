@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { DSVRowArray, ScaleTime, svg } from 'd3';
-import { City } from 'src/app/models/city';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -32,8 +31,8 @@ export class CompareModalComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.createCompareChart(this._dataService.parseData(this.citiesToCompare.values().next().value));
-    this.citiesToCompare.forEach(City => {
-      this.plotCompareChart(this._dataService.parseData(City))
+    this.citiesToCompare.forEach((City, CityName) => {
+      this.plotCompareChart(this._dataService.parseData(City), CityName)
     });
   }
 
@@ -102,7 +101,7 @@ export class CompareModalComponent implements OnInit {
         .text(this.Id);
   }
 
-  plotCompareChart(Citydata: any[]) {
+  private plotCompareChart(Citydata: any[], CityName: string) {
     // Line Generator Mietpreis
     var linefuncMietpreis = d3.line()
         .defined((d:any) =>{return d.Mietpreis !== 0;})            
@@ -124,7 +123,8 @@ export class CompareModalComponent implements OnInit {
     // Line Miete
     this.svg.append('path')
             .datum(Citydata)
-            .attr('class', 'line-mietpreis')
+            .attr('class', 'compare-line')
+            .attr('id', 'line-mietpreis-'+CityName)
             .attr('d', linefuncMietpreis)
             .on("mouseover", (d: any, i: any) => {
               var xPosition = d3.pointer(d)[0]
@@ -147,7 +147,8 @@ export class CompareModalComponent implements OnInit {
     // Line Leerstand
     this.svg.append('path')
     .datum(Citydata)
-    .attr('class', 'line-leerstand')
+    .attr('class', 'compare-line')
+    .attr('id', 'line-leerstand-'+CityName)
     .attr('d', linefuncLeerstand)
     .on("mouseover", (d: any, i: any) => {
       var xPosition = d3.pointer(d)[0]
@@ -170,7 +171,8 @@ export class CompareModalComponent implements OnInit {
     // Line Immo
     this.svg.append('path')
     .datum(Citydata)
-    .attr('class', 'line-immopreis')
+    .attr('class', 'compare-line')
+    .attr('id', 'line-immopreis-'+CityName)
     .attr('d', linefuncImmopreis)
     .on("mouseover", (d: any, i: any) => {
       var xPosition = d3.pointer(d)[0]

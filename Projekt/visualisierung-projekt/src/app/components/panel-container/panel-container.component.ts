@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataClientService } from 'src/app/services/data-client.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-panel-container',
@@ -7,9 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PanelContainerComponent implements OnInit {
 
-  constructor() { }
+  displayCities: Boolean = false;
+
+  constructor(private _dataService: DataService, private _dataClientService: DataClientService) { }
 
   ngOnInit(): void {
+    this._dataClientService.selectCityEvent.subscribe((city: string) => {
+      this.CityAddedHandle()
+    })
   }
 
+  private CityAddedHandle() {
+    if(this._dataService.displayedCities.size === 0) {
+      this.toggleView(false)
+    }
+    else {
+      this.toggleView(true)
+    }
+  }
+
+  private toggleView(state: Boolean) {
+    this.displayCities = state;
+  }
 }

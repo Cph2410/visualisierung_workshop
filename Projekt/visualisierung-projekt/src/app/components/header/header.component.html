@@ -1,1 +1,5 @@
-<h1>Visualisierung: Entwicklung des Wohnmarktes in ausgewählten Städten</h1>
+<div class="header-wrapper" fxLayout="row" fxLayoutAlign="start center">
+    <h1>Visualisierung: Entwicklung des Wohnmarktes in ausgewählten Städten</h1>
+    <label class="seach-label" for="typeahead-basic">Search for a state:</label>
+    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"/>  
+</div>

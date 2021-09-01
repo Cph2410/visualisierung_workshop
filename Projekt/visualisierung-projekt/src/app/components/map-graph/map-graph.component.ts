@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { geoAlbers } from 'd3';
+import { geoAlbers, GeoPath, GeoProjection } from 'd3';
 import { FeatureCollection } from 'geojson';
 import { Topology } from 'topojson-specification';
 import * as topo from 'topojson-client';
 import { DataClientService } from 'src/app/services/data-client.service';
+import { DataService } from 'src/app/services/data.service';
 
-
+// TODO: Remove
 const citiesNrw = [
   {name: "Koeln",
   lat:  50.93541739830901, 
@@ -32,21 +33,28 @@ export class MapGraphComponent implements OnInit {
   private heightDe = 170;
 
 
-  constructor(private _dataService: DataClientService) { }
+  constructor(private _dataClientService: DataClientService, private _dataService: DataService) { }
 
   ngOnInit(): void {
-    this.createMapsSvg(this.width, this.height, this.widthDe, this.heightDe);
+    this.addMap(this.width, this.height);
+    this.addMinimap(this.width, this.widthDe, this.heightDe)
   }
 
   selectCity(selectedCity: string) {
-    this._dataService.selectCityEvent.emit(selectedCity);
+    this._dataClientService.selectCityEvent.emit(selectedCity);
   }
 
-  private createMapsSvg(width: number, height: number, widthDe:number, heightDe: number) {
+  private addMap(width: number, height: number) {
     const component = this;
+
+    // Color Scale
+    var myColor = d3.scaleSequential()
+                    .interpolator(d3.interpolateInferno)
+                    .domain([this._dataService.minPreis,this._dataService.maxPreis])
+
     // Load GeoData
     d3.json('/assets/NRW.topojson')
-      .then(function(data:any) {
+      .then((data:any) => {
         var geoData: Topology;
         geoData = data as Topology;
         var nrw = topo.feature(geoData, geoData.objects.NRW) as FeatureCollection
@@ -69,87 +77,176 @@ export class MapGraphComponent implements OnInit {
               .enter()
               .append('path')
               .attr('d', path);
-            // Cities
-            g.selectAll('circle')
-              .data(citiesNrw)
-              .enter()
-              .append("circle")
-              .attr("cx", function(d) {
-                      return projection([d.long, d.lat])![0];
-              })
-              .attr("cy", function(d) {
-                      return projection([d.long, d.lat])![1];
-              })
-              .attr("r", 5)
-              .style("fill", "red")
-              .on("click", function(d, i) {
-                  var color = this.style.fill == "red" ? "green" : "red";
-                  d3.select(this).style("fill", color);
-                  component.selectCity(i.name)     
-              })
-              .on("mouseover", function(d, i) {
-                  var xPosition = d3.pointer(d)[0]
-                  var yPosition = d3.pointer(d)[1] - 15
 
-                  g.append("text")
-                    .attr("class", "map-tooltip")
-                    .attr("x", xPosition)
-                    .attr("y", yPosition)
-                    .attr("text-anchor", "middle")
-                    .attr("font-family", "sans-serif")  
-                    .attr("font-weight", "bold")
-                    .text(i.name)
-              })
-              .on("mouseout", function(d) {
-                d3.select(".map-tooltip").remove()
-              });
+        // Koeln
+        d3.json('/assets/Koeln.topojson').then((dataCity:any) => {
+          var geoDataCity: Topology;
+          geoDataCity = dataCity as Topology;
+          var de = topo.feature(geoDataCity, geoDataCity.objects.Koeln) as FeatureCollection
 
-        d3.json('/assets/DE.topojson').then(function(dataDE:any) {
-          var geoDataDE: Topology;
-          geoDataDE = dataDE as Topology;
-          var de = topo.feature(geoDataDE, geoDataDE.objects.DE) as FeatureCollection
+          path =d3.geoPath().projection(projection);
 
-          // Projection of DE Map    
-          var projectionDE = d3.geoMercator().fitSize([widthDe,heightDe], de);
+          g = svg.append('g');
 
-          var svgDE = d3.select('.map-wrapper')
-                    .append('svg')
-                    .attr('width', widthDe)
-                    .attr('height', heightDe)
-                    .attr("transform", "translate(" + (width / 3) + "," + 0 + ")")
-
-          var path =d3.geoPath().projection(projectionDE);
-
-          var gDe = svgDE.append('g');
-          // Map
-          gDe.attr('class', 'map-de')
-              gDe.selectAll('path')
+          g.attr('class', 'map-city-heat')
+            g.selectAll('path')
                 .data(de.features)
                 .enter()
                 .append('path')
-                .attr('d', path);
+                .attr('d', path)
+                .attr('style', 'stroke: red')
+                .style("fill", () => { return myColor(11.3)})
+                .on("click", function() {
+                  var color = this.style.stroke == "red" ? "green" : "red";
+                  d3.select(this).style("stroke", color);
+                  component.selectCity("Koeln")     
+                })
+                .on("mouseover", function(d) {
+                    var xPosition = d3.pointer(d)[0]
+                    var yPosition = d3.pointer(d)[1] - 15
 
-          d3.json('/assets/NRW.topojson').then(function(dataDE:any) {
-            var geoDataDE: Topology;
-            geoDataDE = dataDE as Topology;
-            var de = topo.feature(geoDataDE, geoDataDE.objects.NRW) as FeatureCollection
-  
-            path =d3.geoPath().projection(projectionDE);
-  
-            gDe = svgDE.append('g');
-            // Map
-            gDe.attr('class', 'map-de-nrw')
-                gDe.selectAll('path')
-                  .data(de.features)
-                  .enter()
-                  .append('path')
-                  .attr('d', path);
-          })
+                    g.append("text")
+                      .attr("class", "map-tooltip")
+                      .attr("x", xPosition)
+                      .attr("y", yPosition)
+                      .attr("text-anchor", "middle")
+                      .attr("font-family", "sans-serif")  
+                      .attr("font-weight", "bold")
+                      .text("Köln")
+                })
+                .on("mouseout", function() {
+                  d3.select(".map-tooltip").remove()
+                });
         })
-       
+        // Dortmund
+        d3.json('/assets/Dortmund.topojson').then(function(dataCity:any) {
+          var geoDataCity: Topology;
+          geoDataCity = dataCity as Topology;
+          var de = topo.feature(geoDataCity, geoDataCity.objects.Dortmund) as FeatureCollection
+
+          path =d3.geoPath().projection(projection);
+
+          g = svg.append('g');
+
+          g.attr('class', 'map-city-heat')
+            g.selectAll('path')
+                .data(de.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                .attr('style', 'stroke: red')
+                .style("fill", () => { return myColor(6.87)})
+                .on("click", function() {
+                  var color = this.style.stroke == "red" ? "green" : "red";
+                  d3.select(this).style("stroke", color);
+                  component.selectCity("Dortmund")     
+                })
+                .on("mouseover", function(d) {
+                    var xPosition = d3.pointer(d)[0]
+                    var yPosition = d3.pointer(d)[1] - 15
+
+                    g.append("text")
+                      .attr("class", "map-tooltip")
+                      .attr("x", xPosition)
+                      .attr("y", yPosition)
+                      .attr("text-anchor", "middle")
+                      .attr("font-family", "sans-serif")  
+                      .attr("font-weight", "bold")
+                      .text("Dortmund")
+                })
+                .on("mouseout", function() {
+                  d3.select(".map-tooltip").remove()
+                });
+        })
+        // Duesseldorf
+        d3.json('/assets/Duesseldorf.topojson').then(function(dataCity:any) {
+          var geoDataCity: Topology;
+          geoDataCity = dataCity as Topology;
+          var de = topo.feature(geoDataCity, geoDataCity.objects.Duesseldorf) as FeatureCollection
+
+          path =d3.geoPath().projection(projection);
+
+          g = svg.append('g');
+
+          g.attr('class', 'map-city-heat')
+            g.selectAll('path')
+                .data(de.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                .attr('style', 'stroke: red')
+                .style("fill", () => { return myColor(10.83)})
+                .on("click", function() {
+                  var color = this.style.stroke == "red" ? "green" : "red";
+                  d3.select(this).style("stroke", color);
+                  component.selectCity("Duesseldorf")     
+                })
+                .on("mouseover", function(d) {
+                    var xPosition = d3.pointer(d)[0]
+                    var yPosition = d3.pointer(d)[1] - 15
+
+                    g.append("text")
+                      .attr("class", "map-tooltip")
+                      .attr("x", xPosition)
+                      .attr("y", yPosition)
+                      .attr("text-anchor", "middle")
+                      .attr("font-family", "sans-serif")  
+                      .attr("font-weight", "bold")
+                      .text("Düsseldorf")
+                })
+                .on("mouseout", function() {
+                  d3.select(".map-tooltip").remove()
+                });
+        })
       })
       .catch((error) =>{
         console.log(error);
-      })  
+      })
+  }
+
+  private addMinimap(width: number ,widthDe:number, heightDe: number) {
+    // Mini Map Germany      
+    d3.json('/assets/DE.topojson').then(function(dataDE:any) {
+      var geoDataDE: Topology;
+      geoDataDE = dataDE as Topology;
+      var de = topo.feature(geoDataDE, geoDataDE.objects.DE) as FeatureCollection
+
+      // Projection of DE Map    
+      var projectionDE = d3.geoMercator().fitSize([widthDe,heightDe], de);
+
+      var svgDE = d3.select('.map-wrapper')
+                .append('svg')
+                .attr('width', widthDe)
+                .attr('height', heightDe)
+                .attr("transform", "translate(" + (width / 3) + "," + 0 + ")")
+
+      var path =d3.geoPath().projection(projectionDE);
+
+      var gDe = svgDE.append('g');
+      
+      gDe.attr('class', 'map-de')
+          gDe.selectAll('path')
+            .data(de.features)
+            .enter()
+            .append('path')
+            .attr('d', path);
+      // Mini Map NRW
+      d3.json('/assets/NRW.topojson').then(function(dataDE:any) {
+        var geoDataDE: Topology;
+        geoDataDE = dataDE as Topology;
+        var de = topo.feature(geoDataDE, geoDataDE.objects.NRW) as FeatureCollection
+
+        path =d3.geoPath().projection(projectionDE);
+
+        gDe = svgDE.append('g');
+
+        gDe.attr('class', 'map-de-nrw')
+            gDe.selectAll('path')
+              .data(de.features)
+              .enter()
+              .append('path')
+              .attr('d', path);
+      })
+    })
   }
 }

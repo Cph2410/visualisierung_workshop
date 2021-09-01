@@ -1,0 +1,36 @@
+@import './variables.scss';
+
+.line-mietpreis {
+    fill: none;
+    stroke: $mietpreis-color;
+    stroke-width: 2;
+    z-index: 7;
+}
+
+.line-leerstand {
+    fill: none;
+    stroke: $leerstand-color;
+    stroke-width: 2;
+    z-index: 7;
+}
+
+.line-immopreis {
+    fill: none;
+    stroke: $immopreis-color;
+    stroke-width: 2;
+    z-index: 7;
+}
+.x_axis {
+    stroke: black;
+    stroke-width: 1;
+  }
+  
+.y_axis {
+    stroke: black;
+    stroke-width: 1;
+}
+
+.compare-line {
+    fill: none;
+    stroke-width: 2;
+}

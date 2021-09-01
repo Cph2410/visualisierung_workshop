@@ -2,57 +2,16 @@
 @import './styles/variables.scss';
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-.line-mietpreis {
-    fill: none;
-    stroke: $mietpreis-color;
-    stroke-width: 2;
-    z-index: 7;
-}
 
-.line-leerstand {
-    fill: none;
-    stroke: $leerstand-color;
-    stroke-width: 2;
-    z-index: 7;
-}
+@import './styles/cityColors.scss';
 
-.line-immopreis {
-    fill: none;
-    stroke: $immopreis-color;
-    stroke-width: 2;
-    z-index: 7;
-}
-.x_axis {
-    stroke: black;
-    stroke-width: 1;
-  }
-  
-.y_axis {
-    stroke: black;
-    stroke-width: 1;
-}
+@import './styles/mapStyles.scss';
 
-.map path {
-    fill: $map-tile-color;
-    stroke: black;
-    stroke-width: 0.5;
-}
+@import './styles/graphStyles.scss';
 
-.map-de path {
-    fill: $map-de-tile-color;
-    stroke: $map-de-tile-color;
-    stroke-width: 0.5;
-}
-
-.map-de-nrw path {
-    fill: $map-de-nrw-tile-color;
-    stroke: $map-de-nrw-tile-color;
-    stroke-width: 0.5;
-}
-
-.map-tooltip {
-    fill: $tooltip-color;
-    font-size: $tooltip-fontsize;
+.form-control {
+    width: 200px;
+    margin-left: 10px;
 }
 
 #mietpreis-tooltip {
@@ -149,4 +108,8 @@ html {
 .modal-content {
     width: 700px;
     height: 300px;
+}
+
+.app-panel-container {
+    max-height: 100%;
 }

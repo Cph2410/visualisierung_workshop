@@ -1,5 +1,6 @@
 .panel-container-wrapper {
     height: 100%;
+    max-height: 100%;
 }
 
 app-panel-control {
@@ -11,3 +12,9 @@ app-panel-overview{
     overflow-x: hidden;
 }
 
+.conditional-wrapper {
+    height: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
