@@ -35,9 +35,15 @@ export class PanelControllComponent implements OnInit {
       d3.selectAll(".line-immopreis").each(function() {
         d3.select(this).style('visibility', 'hidden')
       });
+      d3.selectAll(".text-immopreis").each(function() {
+        d3.select(this).style('visibility', 'hidden')
+      });
     }
     else {
       d3.selectAll(".line-immopreis").each(function() {
+        d3.select(this).style('visibility', 'visible')
+      });
+      d3.selectAll(".text-immopreis").each(function() {
         d3.select(this).style('visibility', 'visible')
       });
     }
@@ -49,9 +55,15 @@ export class PanelControllComponent implements OnInit {
       d3.selectAll(".line-leerstand").each(function() {
         d3.select(this).style('visibility', 'hidden')
       });
+      d3.selectAll(".text-leerstand").each(function() {
+        d3.select(this).style('visibility', 'hidden')
+      });
     }
     else {
       d3.selectAll(".line-leerstand").each(function() {
+        d3.select(this).style('visibility', 'visible')
+      });
+      d3.selectAll(".text-leerstand").each(function() {
         d3.select(this).style('visibility', 'visible')
       });
     }
@@ -63,9 +75,15 @@ export class PanelControllComponent implements OnInit {
       d3.selectAll(".line-mietpreis").each(function() {
         d3.select(this).style('visibility', 'hidden')
       });
+      d3.selectAll(".text-mietpreis").each(function() {
+        d3.select(this).style('visibility', 'hidden')
+      });
     }
     else {
       d3.selectAll(".line-mietpreis").each(function() {
+        d3.select(this).style('visibility', 'visible')
+      });
+      d3.selectAll(".text-mietpreis").each(function() {
         d3.select(this).style('visibility', 'visible')
       });
     }

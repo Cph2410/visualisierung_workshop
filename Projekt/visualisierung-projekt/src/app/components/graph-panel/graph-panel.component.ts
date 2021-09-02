@@ -25,6 +25,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   private marginBottom = 30
 
   private svg: any;
+  private legend: any;
   private xScale: ScaleTime<number, number, never>;
   private y1Scale: any;
   private y2Scale: any;
@@ -106,6 +107,57 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
         .attr("text-anchor", "middle")
         .attr("transform", "translate(" + (this.width / 2) + "," + 0 + ")")
         .text(this.Id);
+
+     // Add Legend for Lines
+     this.legend = this.svg.append('g')
+                            .attr('class', 'legend-lines')
+
+     this.legend.append("line")
+        .attr("width", 20)
+        .attr("x1", 10)
+        .attr("x2", this.width-350)
+        .attr("y1", 15)
+        .attr("y2", 15)
+        .attr('class', 'line-mietpreis')
+
+    this.legend.append("text")
+        .attr('class', 'text-mietpreis')
+        .style("font", "10px open-sans")
+        .attr("x", this.width-250)
+        .attr("y", 17)
+        .style("text-anchor", "end")
+        .text('Mietpreise');  
+
+    this.legend.append("line")
+        .attr("width", 20)
+        .attr("x1", 10)
+        .attr("x2", this.width-350)
+        .attr("y1", 30)
+        .attr("y2", 30)
+        .attr('class', 'line-immopreis')
+
+    this.legend.append("text")
+        .attr('class', 'text-immopreis')
+        .style("font", "10px open-sans")
+        .attr("x", this.width-250)
+        .attr("y",  32)
+        .style("text-anchor", "end")
+        .text('Immobilienpreise * 10');       
+
+    this.legend.append("line")
+        .attr("x1", 10)
+        .attr("x2", this.width-350)
+        .attr("y1", 45)
+        .attr("y2", 45)
+        .attr('class', 'line-leerstand')
+
+    this.legend.append("text")
+        .attr('class', 'text-leerstand')
+        .style("font", "10px open-sans")
+        .attr("x", this.width-250)
+        .attr("y", 47)
+        .style("text-anchor", "end")
+        .text('Leerstand in Prozent');  
   }
 
 

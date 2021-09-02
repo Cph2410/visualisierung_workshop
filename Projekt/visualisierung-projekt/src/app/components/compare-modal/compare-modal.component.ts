@@ -25,6 +25,8 @@ export class CompareModalComponent implements OnInit {
   private marginBottom = 30
 
   private svg: any;
+  private legendCities: any;
+  private legendLines: any;
   private xScale: ScaleTime<number, number, never>;
   private y1Scale: any;
   private y2Scale: any;
@@ -99,13 +101,58 @@ export class CompareModalComponent implements OnInit {
         .attr("transform", "translate(" + (this.width / 2) + "," + (this.height + (this.marginBottom)) + ")")
         .text("Zeit");
 
-    // Add City Name
-    this.svg.append("text")
-        .style("font", "14px open-sans")
-        .attr("class", "text-name")
-        .attr("text-anchor", "middle")
-        .attr("transform", "translate(" + (this.width / 2) + "," + 0 + ")")
-        .text(this.Id);
+    this.legendCities = this.svg.append('g')
+                                .attr('class', 'legend-cities')
+
+    this.legendLines = this.svg.append('g')
+                                .attr('class', 'legend-lines')
+
+    // Add Legend for Lines
+    this.legendLines.append("line")
+                    .attr("width", 20)
+                    .attr("x1", this.width - 150)
+                    .attr("x2", this.width - 250)
+                    .attr("y1", this.height + 50)
+                    .attr("y2", this.height + 50)
+                    .style("stroke", "black")
+
+    this.legendLines.append("text")
+                    .style("font", "14px open-sans")
+                    .attr("x", this.width)
+                    .attr("y", this.height + 50)
+                    .style("text-anchor", "end")
+                    .text('Mietpreise');  
+
+    this.legendLines.append("line")
+                    .attr("width", 20)
+                    .attr("x1", this.width - 150)
+                    .attr("x2", this.width - 250)
+                    .attr("y1", this.height + 80)
+                    .attr("y2", this.height + 80)
+                    .style("stroke", "black")
+                    .style("stroke-dasharray", 3);
+    
+    this.legendLines.append("text")
+                    .style("font", "14px open-sans")
+                    .attr("x", this.width)
+                    .attr("y", this.height + 80)
+                    .style("text-anchor", "end")
+                    .text('Immobilienpreise * 10');       
+              
+    this.legendLines.append("line")
+                    .attr("x1", this.width - 150)
+                    .attr("x2", this.width - 250)
+                    .attr("y1", this.height + 110)
+                    .attr("y2", this.height + 110)
+                    .style("stroke", "black")
+                    .style("stroke-dasharray", 10);
+
+    this.legendLines.append("text")
+                    .style("font", "14px open-sans")
+                    .attr("x", this.width)
+                    .attr("y", this.height + 110)
+                    .style("text-anchor", "end")
+                    .text('Leerstand in Prozent');    
   }
 
   private plotCompareChart(Citydata: any[], CityName: string, colorIterator: number) {
@@ -201,6 +248,54 @@ export class CompareModalComponent implements OnInit {
     .on("mouseout", function() {
       d3.select("#immopreis-tooltip").classed("hidden", true)
     });
+
+    // Add Legend for City
+    // if (colorIterator%2 === 0 || colorIterator === 0) {
+
+    //     this.legendCities.append("rect")
+    //     .attr("width", 10)
+    //     .attr("height", 10)
+    //     .attr("x", 0)
+    //     .attr("y", this.height + 50 + colorIterator*10)
+    //     .style("fill", colors[colorIterator]);
+
+    //     this.legendCities.append("text")
+    //     .style("font", "14px open-sans")
+    //     .attr("x", 100)
+    //     .attr("y", this.height + 50 + colorIterator*10)
+    //     .style("text-anchor", "end")
+    //     .text(CityName + colorIterator);
+    // }
+    // else {
+    //   this.legendCities.append("rect")
+    //   .attr("width", 10)
+    //   .attr("height", 10)
+    //   .attr("x", 0)
+    //   .attr("y", this.height + 50 + (colorIterator*10)*1.5)
+    //   .style("fill", colors[colorIterator]);
+
+    //   this.legendCities.append("text")
+    //   .style("font", "14px open-sans")
+    //   .attr("x", 100)
+    //   .attr("y", this.height + 50 + (colorIterator*10)*1.5)
+    //   .style("text-anchor", "end")
+    //   .text(CityName + colorIterator);
+    // }
+
+    this.legendCities.append("rect")
+                      .attr("width", 10)
+                      .attr("height", 10)
+                      .attr("x", 0)
+                      .attr("y", this.height + (40+ colorIterator*10) + colorIterator*10)
+                      .style("fill", colors[colorIterator]);
+
+    this.legendCities.append("text")
+                    .style("font", "14px open-sans")
+                    .attr("x", 100)
+                    .attr("y", this.height + (50+ colorIterator*10) + colorIterator*10)
+                    .style("text-anchor", "end")
+                    .text(CityName);
+    
   }
 
 }
