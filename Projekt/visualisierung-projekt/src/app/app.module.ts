@@ -14,6 +14,7 @@ import { PanelControllComponent } from './components/panel-controll/panel-contro
 import { PanelContainerComponent } from './components/panel-container/panel-container.component';
 import { CompareModalComponent } from './components/compare-modal/compare-modal.component';
 import { FormsModule } from '@angular/forms';
+import { NgbdSortableHeader, RankingComponent } from './components/ranking/ranking.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     PanelControllComponent,
     PanelContainerComponent,
-    CompareModalComponent
+    CompareModalComponent,
+    RankingComponent,
+    NgbdSortableHeader
   ],
   imports: [
     BrowserModule,

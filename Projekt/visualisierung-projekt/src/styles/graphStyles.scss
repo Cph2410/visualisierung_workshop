@@ -30,7 +30,19 @@
     stroke-width: 1;
 }
 
-.compare-line {
+.compare-line-mietpreis {
     fill: none;
+    stroke-width: 2;
+}
+
+.compare-line-leerstand {
+    fill: none;
+    stroke-dasharray: 10;
+    stroke-width: 2;
+}
+
+.compare-line-immopreis {
+    fill: none;
+    stroke-dasharray: 3;
     stroke-width: 2;
 }

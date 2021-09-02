@@ -80,4 +80,8 @@ export class DataService {
     }
   }
 
+  // TODO: If Time Use this Function for Latest Values
+  getLatestValuesOfCities() {
+
+  } 
 }

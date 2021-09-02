@@ -50,7 +50,7 @@ export class MapGraphComponent implements OnInit {
     // Color Scale
     var myColor = d3.scaleSequential()
                     .interpolator(d3.interpolateInferno)
-                    .domain([this._dataService.minPreis,this._dataService.maxPreis])
+                    .domain([this._dataService.minPreis, 18])
 
     // Load GeoData
     d3.json('/assets/NRW.topojson')

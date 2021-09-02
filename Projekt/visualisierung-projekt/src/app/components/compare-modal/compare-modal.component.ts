@@ -1,7 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { DSVRowArray, ScaleTime, svg } from 'd3';
+import { color, DSVRowArray, ScaleTime, svg } from 'd3';
 import { DataService } from 'src/app/services/data.service';
+
+
+
+  const colors = ["#f7b731","#3867d6","#eb3b5a","#26704b","#8854d0","#2bcbba","#4b6584"]
+
 
 @Component({
   selector: 'app-compare-modal',
@@ -14,8 +19,8 @@ export class CompareModalComponent implements OnInit {
   @Input() Id: string;
   @Input() citiesToCompare = new Map<string, DSVRowArray>();
 
-  private width = 400;
-  private height = 150;
+  private width = 600;
+  private height = 300;
   private marginLeft = 80;
   private marginBottom = 30
 
@@ -30,9 +35,11 @@ export class CompareModalComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    var colorIterator = 0;
     this.createCompareChart(this._dataService.parseData(this.citiesToCompare.values().next().value));
     this.citiesToCompare.forEach((City, CityName) => {
-      this.plotCompareChart(this._dataService.parseData(City), CityName)
+      this.plotCompareChart(this._dataService.parseData(City), CityName,colorIterator)
+      colorIterator++;
     });
   }
 
@@ -47,7 +54,7 @@ export class CompareModalComponent implements OnInit {
     this.y1Scale = d3.scaleLinear().range([this.height, 0]);
     this.y2Scale = d3.scaleLinear().range([this.height, 0]);
     // TODO: One Date for every Plot
-    this.xScale.domain(<[Date, Date]>d3.extent(Citydata, function (d) { return d.Quartal; }));
+    this.xScale.domain([this._dataService.earliestDate, this._dataService.latestDate]);
     
     this.y1Scale.domain([this._dataService.minPreis,this._dataService.maxPreis]);
 
@@ -101,7 +108,7 @@ export class CompareModalComponent implements OnInit {
         .text(this.Id);
   }
 
-  private plotCompareChart(Citydata: any[], CityName: string) {
+  private plotCompareChart(Citydata: any[], CityName: string, colorIterator: number) {
     // Line Generator Mietpreis
     var linefuncMietpreis = d3.line()
         .defined((d:any) =>{return d.Mietpreis !== 0;})            
@@ -123,9 +130,10 @@ export class CompareModalComponent implements OnInit {
     // Line Miete
     this.svg.append('path')
             .datum(Citydata)
-            .attr('class', 'compare-line')
+            .attr('class', 'compare-line-mietpreis')
             .attr('id', 'line-mietpreis-'+CityName)
             .attr('d', linefuncMietpreis)
+            .attr('stroke', colors[colorIterator])
             .on("mouseover", (d: any, i: any) => {
               var xPosition = d3.pointer(d)[0]
               var yPosition = d3.pointer(d)[1]
@@ -147,9 +155,10 @@ export class CompareModalComponent implements OnInit {
     // Line Leerstand
     this.svg.append('path')
     .datum(Citydata)
-    .attr('class', 'compare-line')
+    .attr('class', 'compare-line-leerstand')
     .attr('id', 'line-leerstand-'+CityName)
     .attr('d', linefuncLeerstand)
+    .attr('stroke', colors[colorIterator])
     .on("mouseover", (d: any, i: any) => {
       var xPosition = d3.pointer(d)[0]
       var yPosition = d3.pointer(d)[1]
@@ -171,9 +180,10 @@ export class CompareModalComponent implements OnInit {
     // Line Immo
     this.svg.append('path')
     .datum(Citydata)
-    .attr('class', 'compare-line')
+    .attr('class', 'compare-line-immopreis')
     .attr('id', 'line-immopreis-'+CityName)
     .attr('d', linefuncImmopreis)
+    .attr('stroke', colors[colorIterator])
     .on("mouseover", (d: any, i: any) => {
       var xPosition = d3.pointer(d)[0]
       var yPosition = d3.pointer(d)[1]

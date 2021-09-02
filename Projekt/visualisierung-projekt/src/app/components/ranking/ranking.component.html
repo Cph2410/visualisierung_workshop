@@ -1,0 +1,19 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col" >Stadt</th>
+      <th scope="col" sortable="Mietpreis" (sort)="onSort($event)">Mietpreis</th>
+      <th scope="col" sortable="Immobilienpreis" (sort)="onSort($event)">Immobilienpreis</th>
+      <th scope="col" sortable="Leerstand" (sort)="onSort($event)">Leerstand</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let city of this.latestCityValues">
+      <th scope="row">{{ city.Name }}</th>
+      <td>{{ city.Mietpreis| number }} €/qm</td>
+      <td>{{ city.Immobilienpreis| number }} €/qm</td>
+      <td>{{ city.Leerstand| number }} %</td>
+    </tr>
+    </tbody>
+
+  </table>

@@ -15,7 +15,6 @@ export class DataClientService {
 
   constructor(private _httpClient: HttpClient) { 
     this.loadData(); 
-    
   }
 
 
