@@ -142,7 +142,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
         .attr("x", this.width-250)
         .attr("y",  32)
         .style("text-anchor", "end")
-        .text('Immobilienpreise * 10');       
+        .text('Immobilienpreise * 100');       
 
     this.legend.append("line")
         .attr("x1", 10)

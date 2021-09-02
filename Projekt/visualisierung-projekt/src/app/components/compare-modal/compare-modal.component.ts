@@ -137,7 +137,7 @@ export class CompareModalComponent implements OnInit {
                     .attr("x", this.width)
                     .attr("y", this.height + 80)
                     .style("text-anchor", "end")
-                    .text('Immobilienpreise * 10');       
+                    .text('Immobilienpreise * 100');       
               
     this.legendLines.append("line")
                     .attr("x1", this.width - 150)

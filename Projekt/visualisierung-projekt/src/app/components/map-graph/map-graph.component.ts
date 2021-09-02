@@ -100,7 +100,6 @@ export class MapGraphComponent implements OnInit {
                 .on("click", function() {
                   var color = this.style.stroke == "red" ? "green" : "red";
                   d3.select(this).style("stroke", color);
-                  console.log('Test')
                   component.selectCity("Koeln")     
                 })
                 .on("mouseover", function(d) {
