@@ -79,4 +79,8 @@ export class RankingComponent implements OnInit {
       });
     }
   }
+
+  onClick(city: string) {
+    this.dataClientService.selectCityEvent.emit(city);
+  }
 }

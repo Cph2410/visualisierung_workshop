@@ -9,11 +9,11 @@ import * as d3 from 'd3';
 })
 export class DataService {
 
-  readonly minPreis=4;
+  readonly minPreis=1;
   readonly minLeerstand=0;
-  readonly maxPreis = 80;
+  readonly maxPreis = 20;
   readonly maxLeerstand = 6;
-  readonly earliestDate = new Date("2004-01-01");
+  readonly earliestDate = new Date("2010-01-01");
   readonly latestDate = new Date("2021-01-01");
 
   displayCityGraphs: Boolean = false;
@@ -32,11 +32,26 @@ export class DataService {
     parsedData.sort((a: City, b: City) => {
         return a.Quartal.getTime() - b.Quartal.getTime();
     });
-    parsedData = parsedData.filter((City) => {return City.Quartal >= new Date("2004-01-01") })
+    parsedData = parsedData.filter((City) => {return City.Quartal >= new Date("2010-01-01") })
     parsedData.forEach((City) => {
-      City.Immobilienpreis = City.Immobilienpreis/100
+      // console.log("Quartal: "+City.Quartal+" | Mietpreis: "+City.Mietpreis+" | Immobilienpreis: "+City.Immobilienpreis+" | Leerstand: "+City.Leerstand)
+      City.Immobilienpreis = City.Immobilienpreis/1000
     })
     return parsedData;
+  }
+
+
+  // Because we cant use Defined
+  public filterNullValuesMiete(City: City[]): City[] {
+    return City.filter((City)=> {return City.Mietpreis > 0})
+  }
+
+  public filterNullValuesLeerstand(City: City[]): City[] {
+    return City.filter((City)=> {return City.Leerstand > 0})
+  }
+
+  public filterNullValuesImmo(City: City[]): City[] {
+    return City.filter((City)=> {return City.Immobilienpreis > 0})
   }
 
   private parseDate(QuartalDate: string): Date{

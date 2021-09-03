@@ -157,26 +157,23 @@ export class CompareModalComponent implements OnInit {
 
   private plotCompareChart(Citydata: any[], CityName: string, colorIterator: number) {
     // Line Generator Mietpreis
-    var linefuncMietpreis = d3.line()
-        .defined((d:any) =>{return d.Mietpreis !== 0;})            
+    var linefuncMietpreis = d3.line()           
         .x((d:any) => this.xScale(d.Quartal))
         .y((d:any) =>this.y1Scale(d.Mietpreis))
 
     // Line Generator Immobilienpreis
-    var linefuncImmopreis = d3.line()
-        .defined((d:any) =>{return d.Immobilienpreis !== 0;})            
+    var linefuncImmopreis = d3.line()        
         .x((d:any) => this.xScale(d.Quartal))
-        .y((d:any) =>this.y2Scale((d.Immobilienpreis/10)))
+        .y((d:any) =>this.y1Scale((d.Immobilienpreis)))
 
     // Line Generator Leerstand
-    var linefuncLeerstand = d3.line()
-        .defined((d:any) =>{return d.Leerstand !== 0;})            
+    var linefuncLeerstand = d3.line()         
         .x((d:any) => this.xScale(d.Quartal))
         .y((d:any) => this.y2Scale(d.Leerstand))
 
     // Line Miete
     this.svg.append('path')
-            .datum(Citydata)
+            .datum(this._dataService.filterNullValuesMiete(Citydata))
             .attr('class', 'compare-line-mietpreis')
             .attr('id', 'line-mietpreis-'+CityName)
             .attr('d', linefuncMietpreis)
@@ -201,7 +198,7 @@ export class CompareModalComponent implements OnInit {
 
     // Line Leerstand
     this.svg.append('path')
-    .datum(Citydata)
+    .datum(this._dataService.filterNullValuesLeerstand(Citydata))
     .attr('class', 'compare-line-leerstand')
     .attr('id', 'line-leerstand-'+CityName)
     .attr('d', linefuncLeerstand)
@@ -226,7 +223,7 @@ export class CompareModalComponent implements OnInit {
 
     // Line Immo
     this.svg.append('path')
-    .datum(Citydata)
+    .datum(this._dataService.filterNullValuesImmo(Citydata))
     .attr('class', 'compare-line-immopreis')
     .attr('id', 'line-immopreis-'+CityName)
     .attr('d', linefuncImmopreis)
@@ -248,39 +245,6 @@ export class CompareModalComponent implements OnInit {
     .on("mouseout", function() {
       d3.select("#immopreis-tooltip").classed("hidden", true)
     });
-
-    // Add Legend for City
-    // if (colorIterator%2 === 0 || colorIterator === 0) {
-
-    //     this.legendCities.append("rect")
-    //     .attr("width", 10)
-    //     .attr("height", 10)
-    //     .attr("x", 0)
-    //     .attr("y", this.height + 50 + colorIterator*10)
-    //     .style("fill", colors[colorIterator]);
-
-    //     this.legendCities.append("text")
-    //     .style("font", "14px open-sans")
-    //     .attr("x", 100)
-    //     .attr("y", this.height + 50 + colorIterator*10)
-    //     .style("text-anchor", "end")
-    //     .text(CityName + colorIterator);
-    // }
-    // else {
-    //   this.legendCities.append("rect")
-    //   .attr("width", 10)
-    //   .attr("height", 10)
-    //   .attr("x", 0)
-    //   .attr("y", this.height + 50 + (colorIterator*10)*1.5)
-    //   .style("fill", colors[colorIterator]);
-
-    //   this.legendCities.append("text")
-    //   .style("font", "14px open-sans")
-    //   .attr("x", 100)
-    //   .attr("y", this.height + 50 + (colorIterator*10)*1.5)
-    //   .style("text-anchor", "end")
-    //   .text(CityName + colorIterator);
-    // }
 
     this.legendCities.append("rect")
                       .attr("width", 10)

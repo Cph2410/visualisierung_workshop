@@ -9,7 +9,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let city of this.latestCityValues">
-      <th scope="row">{{ city.Name }}</th>
+      <th scope="row" (click)="onClick(city.Id)">{{ city.Name }}</th>
       <td>{{ city.Mietpreis| number }} €/qm</td>
       <td>{{ city.Immobilienpreis| number }} €/qm</td>
       <td>{{ city.Leerstand| number }} %</td>

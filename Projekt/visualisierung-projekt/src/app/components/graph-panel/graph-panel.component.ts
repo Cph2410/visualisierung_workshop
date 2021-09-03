@@ -48,8 +48,6 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   }
 
   private createChart (Citydata: any[]){
-    console.log(Citydata)
-    
     // Scales vereinheitlichen
     this.xScale = d3.scaleTime().range([0,this.width]);
     this.y1Scale = d3.scaleLinear().range([this.height, 0]);
@@ -163,26 +161,24 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
 
   plotChart(Citydata: any[]) {
     // Line Generator Mietpreis
-    var linefuncMietpreis = d3.line()
-        .defined((d:any) =>{return d.Mietpreis !== 0;})            
+    var linefuncMietpreis = d3.line()     
         .x((d:any) => this.xScale(d.Quartal))
         .y((d:any) =>this.y1Scale(d.Mietpreis))
+       
 
     // Line Generator Immobilienpreis
-    var linefuncImmopreis = d3.line()
-        .defined((d:any) =>{return d.Immobilienpreis !== 0;})            
+    var linefuncImmopreis = d3.line()            
         .x((d:any) => this.xScale(d.Quartal))
-        .y((d:any) =>this.y2Scale((d.Immobilienpreis/10)))
+        .y((d:any) =>this.y1Scale((d.Immobilienpreis)))
 
     // Line Generator Leerstand
-    var linefuncLeerstand = d3.line()
-        .defined((d:any) =>{return d.Leerstand !== 0;})            
+    var linefuncLeerstand = d3.line()          
         .x((d:any) => this.xScale(d.Quartal))
         .y((d:any) => this.y2Scale(d.Leerstand))
 
     // Line Miete
     this.svg.append('path')
-            .datum(Citydata)
+            .datum(this._dataService.filterNullValuesMiete(Citydata))
             .attr('class', 'line-mietpreis')
             .attr('d', linefuncMietpreis)
             .on("mouseover", (d: any, i: any) => {
@@ -205,7 +201,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
 
     // Line Leerstand
     this.svg.append('path')
-    .datum(Citydata)
+    .datum(this._dataService.filterNullValuesLeerstand(Citydata))
     .attr('class', 'line-leerstand')
     .attr('d', linefuncLeerstand)
     .on("mouseover", (d: any, i: any) => {
@@ -228,7 +224,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
 
     // Line Immo
     this.svg.append('path')
-    .datum(Citydata)
+    .datum(this._dataService.filterNullValuesImmo(Citydata))
     .attr('class', 'line-immopreis')
     .attr('d', linefuncImmopreis)
     .on("mouseover", (d: any, i: any) => {
