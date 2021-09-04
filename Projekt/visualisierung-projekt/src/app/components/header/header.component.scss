@@ -1,3 +1,23 @@
+@import '../../../styles/variables.scss';
+
+
+#search-field {
+    display:flex;
+    position: absolute;
+    right: 60px;
+}
+
 .seach-label {
     margin-left: 80px;
+    padding-top: 6px;
+}
+h1 {
+    margin-left: 10px;
+    font-size: 1.9em;
+}
+
+.header-wrapper {
+    background-color: $primary-design-color;
+    color:white;
+    height: 100%;
 }
