@@ -87,6 +87,31 @@
     line-height: 20px;
 }
 
+#koeln-tooltip {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+#koeln-tooltip.hidden {
+    display: none;
+}
+
+#koeln-tooltip p {
+    margin: 0;
+    font-family: $tooltip-family;
+    font-size: $tooltip-fontsize;
+    line-height: 20px;
+}
+
 app-root {
     overflow: hidden;
     height: 100vh;

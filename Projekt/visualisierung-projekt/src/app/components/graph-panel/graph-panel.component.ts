@@ -195,9 +195,9 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
 
               d3.select("#mietpreis-tooltip").classed("hidden", false)
             })
-    .on("mouseout", function() {
-      d3.select("#mietpreis-tooltip").classed("hidden", true)
-    });
+            .on("mouseout", function() {
+              d3.select("#mietpreis-tooltip").classed("hidden", true)
+            });
 
     // Line Leerstand
     this.svg.append('path')

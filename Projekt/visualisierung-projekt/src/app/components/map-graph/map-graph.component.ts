@@ -50,7 +50,7 @@ export class MapGraphComponent implements OnInit {
     // Color Scale
     var myColor = d3.scaleSequential()
                     .interpolator(d3.interpolateInferno)
-                    .domain([this._dataService.minPreis, 18])
+                    .domain([18, this._dataService.minPreis])
 
     // Load GeoData
     d3.json('/assets/NRW.topojson')
@@ -103,21 +103,21 @@ export class MapGraphComponent implements OnInit {
                   component.selectCity("Koeln")     
                 })
                 .on("mouseover", function(d) {
-                    var xPosition = d3.pointer(d)[0]
-                    var yPosition = d3.pointer(d)[1] - 15
+                  var xPosition = d3.pointer(d)[0]
+                  var yPosition = d3.pointer(d)[1] - 15
 
-                    g.append("text")
-                      .attr("class", "map-tooltip")
-                      .attr("x", xPosition)
-                      .attr("y", yPosition)
-                      .attr("text-anchor", "middle")
-                      .attr("font-family", "sans-serif")  
-                      .attr("font-weight", "bold")
-                      .text("Köln")
-                })
-                .on("mouseout", function() {
-                  d3.select(".map-tooltip").remove()
-                });
+                  g.append("text")
+                    .attr("class", "map-tooltip")
+                    .attr("x", xPosition)
+                    .attr("y", yPosition)
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "sans-serif")  
+                    .attr("font-weight", "bold")
+                    .text("Köln")
+              })
+              .on("mouseout", function() {
+                d3.select(".map-tooltip").remove()
+              });
         })
         // Dortmund
         d3.json('/assets/Dortmund.topojson').then(function(dataCity:any) {

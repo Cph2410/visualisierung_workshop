@@ -5,7 +5,7 @@ import { DataService } from 'src/app/services/data.service';
 
 
 
-  const colors = ["#f7b731","#3867d6","#eb3b5a","#26704b","#8854d0","#2bcbba","#4b6584"]
+  const colors = ["#eb3b5a","#3867d6","#26704b","#f7b731","#8854d0","#2bcbba","#4b6584"]
 
 
 @Component({
