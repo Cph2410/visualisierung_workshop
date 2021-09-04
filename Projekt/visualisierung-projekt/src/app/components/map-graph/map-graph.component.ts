@@ -49,7 +49,7 @@ export class MapGraphComponent implements OnInit {
 
     // Color Scale
     var myColor = d3.scaleSequential()
-                    .interpolator(d3.interpolateInferno)
+                    .interpolator(d3.interpolatePlasma)
                     .domain([18, this._dataService.minPreis])
 
     // Load GeoData
@@ -94,11 +94,11 @@ export class MapGraphComponent implements OnInit {
                 .enter()
                 .append('path')
                 .attr('d', path)
-                .attr('style', 'stroke: red')
+                .attr('style', 'stroke: rgb(146, 0, 0); stroke-width:2')
                 .attr('id', 'Koeln-heat')
                 .style("fill", () => { return myColor(11.3)})
                 .on("click", function() {
-                  var color = this.style.stroke == "red" ? "green" : "red";
+                  var color = this.style.stroke == "rgb(146, 0, 0)" ? "#26704b" : "rgb(146, 0, 0)";
                   d3.select(this).style("stroke", color);
                   component.selectCity("Koeln")     
                 })
@@ -135,11 +135,11 @@ export class MapGraphComponent implements OnInit {
                 .enter()
                 .append('path')
                 .attr('d', path)
-                .attr('style', 'stroke: red')
+                .attr('style', 'stroke: rgb(146, 0, 0); stroke-width:2')
                 .attr('id', 'Dortmund-heat')
                 .style("fill", () => { return myColor(6.87)})
                 .on("click", function() {
-                  var color = this.style.stroke == "red" ? "green" : "red";
+                  var color = this.style.stroke == "rgb(146, 0, 0)" ? "#26704b" : "rgb(146, 0, 0)";
                   d3.select(this).style("stroke", color);
                   component.selectCity("Dortmund")     
                 })
@@ -176,11 +176,11 @@ export class MapGraphComponent implements OnInit {
                 .enter()
                 .append('path')
                 .attr('d', path)
-                .attr('style', 'stroke: red')
+                .attr('style', 'stroke: rgb(146, 0, 0); stroke-width:2')
                 .attr('id', 'Duesseldorf-heat')
                 .style("fill", () => { return myColor(10.83)})
                 .on("click", function() {
-                  var color = this.style.stroke == "red" ? "green" : "red";
+                  var color = this.style.stroke == "rgb(146, 0, 0)" ? "#26704b" : "rgb(146, 0, 0)";
                   d3.select(this).style("stroke", color);
                   component.selectCity("Duesseldorf")     
                 })

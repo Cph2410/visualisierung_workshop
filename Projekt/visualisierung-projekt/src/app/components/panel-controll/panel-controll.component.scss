@@ -1,18 +1,20 @@
 @import '../../../styles/variables.scss';
 
 .panel-control-button {
-    border-radius: 20px;
+    border-radius: 5px;
     min-height: 20px;
     min-width: 60px;
     margin-left: 5px;
     margin-right: 5px;
+    background-color: $button-toggle-off;
+    border-color: $primary-design-color;
   }
 
 .control-wrapper {
     height: 90%;
     border-top-style: solid;
     border-top-width: 1px;
-    border-top-color: $boder-color;
+    border-top-color: $border-color;
 }
 
 .radio-control {
@@ -25,11 +27,13 @@
 }
 
 .panel-filter-button {
-    border-radius: 20px;
+    border-radius: 5px;
     min-height: 20px;
     min-width: 60px;
     margin-left: 5px;
     margin-right: 5px;
+    background-color: $button-toggle-off;
+    border-color: $primary-design-color;
   }
 
   .main-control-buttons {

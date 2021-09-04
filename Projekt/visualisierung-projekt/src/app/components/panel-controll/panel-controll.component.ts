@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonLabel, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataService } from 'src/app/services/data.service';
 import { CompareModalComponent } from '../compare-modal/compare-modal.component';
 import * as d3 from 'd3';
+import { bufferToggle } from 'rxjs/operators';
 
 @Component({
   selector: 'app-panel-control',
@@ -32,6 +33,7 @@ export class PanelControllComponent implements OnInit {
 
   toggleImmobielienpreise() {
     if (this.showImmopreis) {
+      d3.selectAll(".button-immopreise").style("background-color", "#9fbded");
       d3.selectAll(".line-immopreis").each(function() {
         d3.select(this).style('visibility', 'hidden')
       });
@@ -40,6 +42,7 @@ export class PanelControllComponent implements OnInit {
       });
     }
     else {
+      d3.selectAll(".button-immopreise").style("background-color", "#f5f5f5");
       d3.selectAll(".line-immopreis").each(function() {
         d3.select(this).style('visibility', 'visible')
       });
@@ -52,6 +55,7 @@ export class PanelControllComponent implements OnInit {
 
   toggleLeerstand() {
     if (this.showLeerstand) {
+      d3.selectAll(".button-leerstand").style("background-color", "#9fbded");
       d3.selectAll(".line-leerstand").each(function() {
         d3.select(this).style('visibility', 'hidden')
       });
@@ -60,6 +64,7 @@ export class PanelControllComponent implements OnInit {
       });
     }
     else {
+      d3.selectAll(".button-leerstand").style("background-color", "#f5f5f5");
       d3.selectAll(".line-leerstand").each(function() {
         d3.select(this).style('visibility', 'visible')
       });
@@ -72,6 +77,7 @@ export class PanelControllComponent implements OnInit {
 
   toggleMietpreise() {
     if (this.showMietpreis) {
+      d3.selectAll(".button-mietpreise").style("background-color", "#9fbded");
       d3.selectAll(".line-mietpreis").each(function() {
         d3.select(this).style('visibility', 'hidden')
       });
@@ -80,6 +86,7 @@ export class PanelControllComponent implements OnInit {
       });
     }
     else {
+      d3.selectAll(".button-mietpreise").style("background-color", "#f5f5f5");
       d3.selectAll(".line-mietpreis").each(function() {
         d3.select(this).style('visibility', 'visible')
       });
