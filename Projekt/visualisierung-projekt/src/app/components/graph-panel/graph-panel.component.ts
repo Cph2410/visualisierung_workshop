@@ -14,10 +14,6 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   
   @Input() City: DSVRowArray;
   @Input() Id: string;
-  @Input() maxPreis: number;
-  @Input() maxLeerstand: number;
-  @Input() minPreis: number;
-  @Input() minLeerstand: number;
 
   private width = 400;
   private height = 150;
@@ -159,7 +155,7 @@ export class GraphPanelComponent implements OnInit, AfterViewInit {
   }
 
 
-  plotChart(Citydata: any[]) {
+  private plotChart(Citydata: any[]) {
     // Line Generator Mietpreis
     var linefuncMietpreis = d3.line()     
         .x((d:any) => this.xScale(d.Quartal))

@@ -45,7 +45,7 @@ export class RankingComponent implements OnInit {
 
   // A little bit Hacky because of Time
   latestCityValues = [
-    {Name: "Berlin", Mietpreis: 10.17, Immobilienpreis: 4781.0, Leerstand: 0.8, Id: "Koeln" }, // 2021, 2021, 2018
+    {Name: "Berlin", Mietpreis: 10.17, Immobilienpreis: 4781.0, Leerstand: 0.8, Id: "Berlin" }, // 2021, 2021, 2018
     {Name: "Dortmund", Mietpreis: 6.87, Immobilienpreis: 1662.0, Leerstand: 2.5, Id: "Dortmund" }, // 2019,2019,2017
     {Name: "Düsseldorf", Mietpreis: 10.83, Immobilienpreis: 4378.0, Leerstand: 1.35, Id: "Duesseldorf" }, // 2021,2021,2019
     {Name: "Frankfurt", Mietpreis: 13.52, Immobilienpreis: 6196.0, Leerstand: 0.2, Id: "Frankfurt" }, // 2021, 2021, 2019
