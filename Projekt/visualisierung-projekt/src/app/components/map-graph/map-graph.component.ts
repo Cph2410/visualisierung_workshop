@@ -155,7 +155,7 @@ export class MapGraphComponent implements OnInit {
                       .attr("text-anchor", "middle")
                       .attr("font-family", "sans-serif")  
                       .attr("font-weight", "bold")
-                      .text("Dortmund")
+                      .text("Dortmund")                  
                 })
                 .on("mouseout", function() {
                   d3.select(".map-tooltip").remove()
