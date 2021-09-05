@@ -6,9 +6,20 @@
     min-width: 60px;
     margin-left: 5px;
     margin-right: 5px;
-    background-color: $button-toggle-off;
     border-color: $primary-design-color;
+    background-color: $button-toggle-deactivated;
   }
+
+  .panel-control-button:enabled {
+    background-color: $button-toggle-off;
+}
+
+
+  .panel-control-button:disabled {
+    background-color: $button-toggle-deactivated;
+    opacity: 0.6;
+    color: black;
+}
 
 .control-wrapper {
     height: 90%;
@@ -26,15 +37,26 @@
     margin-top: 20px;
 }
 
+.panel-filter-button:disabled {
+    background-color: $button-toggle-deactivated;
+    opacity: 0.6;
+    color: black;
+}
+
+.panel-filter-button:enabled {
+    background-color: $button-toggle-off;
+}
+
 .panel-filter-button {
     border-radius: 5px;
     min-height: 20px;
     min-width: 60px;
     margin-left: 5px;
     margin-right: 5px;
-    background-color: $button-toggle-off;
+    background-color: $button-toggle-deactivated;
     border-color: $primary-design-color;
   }
+
 
   .main-control-buttons {
       margin-top: 15px;

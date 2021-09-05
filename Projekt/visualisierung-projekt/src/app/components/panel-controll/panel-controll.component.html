@@ -1,11 +1,11 @@
 <div class="control-wrapper" fxLayout="column" fxLayoutAlign="center center">
     <div class="main-control-buttons" fxLayout="row" fxLayoutAlign="space-between space-between">
-        <button class="panel-control-button" (click)="toggleView()" fxFlex>Ranking / Graphen</button>
-        <button class="panel-control-button" (click)="openCompareModal()">Ausgwählte Städte Vergleichen</button>
+        <button class="panel-control-button" (click)="toggleView()" disabled fxFlex>Ranking / Graphen</button>
+        <button class="panel-control-button button-compare" (click)="openCompareModal()" disabled>Ausgwählte Städte Vergleichen</button>
     </div>
     <div class="filter-control-buttons" fxLayout="row" fxLayoutAlign="center start">
-        <button class="panel-filter-button button-mietpreise" (click)="toggleMietpreise()" fxFlex>Mietpreise</button>
-        <button class="panel-filter-button button-immopreise" (click)="toggleImmobielienpreise()">Immobilienpreise</button>
-        <button class="panel-filter-button button-leerstand" (click)="toggleLeerstand()">Leerstand</button>
+        <button class="panel-filter-button button-mietpreise" (click)="toggleMietpreise()" disabled fxFlex>Mietpreise</button>
+        <button class="panel-filter-button button-immopreise" (click)="toggleImmobielienpreise()" disabled>Immobilienpreise</button>
+        <button class="panel-filter-button button-leerstand" (click)="toggleLeerstand()" disabled>Leerstand</button>
     </div>
 </div>

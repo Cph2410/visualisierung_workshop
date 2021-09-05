@@ -2,3 +2,19 @@
     height:90%;
     margin-top: 20px;
 }
+
+.heatmap-legend {
+    position: absolute;
+    bottom: 80px;
+    left: 800px;
+    
+}
+
+.heatmap-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+#heatmap {
+    display: block;
+}
